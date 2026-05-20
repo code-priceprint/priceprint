@@ -132,22 +132,44 @@ function wireDataActions() {
     location.reload();
   });
 
+  function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
   exportBtn.addEventListener('click', async () => {
     try {
       const data = await exportAll();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
       const stamp = new Date().toISOString().slice(0, 10);
-      a.href = url;
-      a.download = `priceprint-${stamp}.json`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
+      downloadBlob(
+        new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }),
+        `priceprint-${stamp}.json`,
+      );
     } catch (err) {
       console.error(err);
       await customAlert((err.message || String(err)), { title: 'Could not export' });
+    }
+  });
+
+  const exportCsvBtn = document.getElementById('exportCsvBtn');
+  exportCsvBtn?.addEventListener('click', async () => {
+    try {
+      const data = await exportAll();
+      const stamp = new Date().toISOString().slice(0, 10);
+      const csv = priceLogsToCsv(data);
+      downloadBlob(
+        new Blob([csv], { type: 'text/csv;charset=utf-8' }),
+        `priceprint-${stamp}.csv`,
+      );
+    } catch (err) {
+      console.error(err);
+      await customAlert((err.message || String(err)), { title: 'Could not export CSV' });
     }
   });
 
@@ -219,6 +241,42 @@ function formatBytes(bytes) {
   if (bytes < 1024 * 1024)        return `${(bytes / 1024).toFixed(1)} KB`;
   if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
   return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+}
+
+// CSV export — denormalized one-row-per-log shape so a spreadsheet can open
+// it without joining tables. Includes item name + category + store name
+// (resolved from the foreign keys), the raw price + size + unit you logged,
+// and the computed unit_price. RFC 4180 quoting: wrap any cell that contains
+// a comma, quote, or newline in double quotes; double up any inner quote.
+function priceLogsToCsv({ items, stores, price_history }) {
+  const itemById  = new Map(items.map(i => [i.id, i]));
+  const storeById = new Map(stores.map(s => [s.id, s]));
+  const headers = ['date', 'item', 'category', 'store', 'size', 'unit', 'price', 'unit_price', 'unit_price_per', 'is_sale'];
+  const cell = (v) => {
+    if (v === null || v === undefined) return '';
+    const s = String(v);
+    return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  const rows = price_history
+    .slice()
+    .sort((a, b) => (a.date > b.date ? 1 : -1))
+    .map(log => {
+      const item  = itemById.get(log.item_id);
+      const store = log.store_id ? storeById.get(log.store_id) : null;
+      return [
+        log.date,
+        item ? item.name : '',
+        item ? (item.category || '') : '',
+        store ? store.name : '',
+        log.size,
+        log.unit,
+        log.price,
+        log.unit_price,
+        log.unit, // the unit the unit_price is per — same as `unit` since we store display unit
+        log.is_sale ? 'true' : 'false',
+      ].map(cell).join(',');
+    });
+  return headers.join(',') + '\n' + rows.join('\n') + '\n';
 }
 
 init().catch(err => {

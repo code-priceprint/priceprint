@@ -6,8 +6,27 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  // Consent Mode v2 — deny everything until the visitor opts in via the
+  // banner (js/consent.js). wait_for_update buffers events briefly so a
+  // fast consent click still tags the initial pageview correctly.
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
+  try {
+    if (localStorage.getItem('priceprint.consent') === 'granted') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    }
+  } catch (e) {}
   gtag('js', new Date());
-
   gtag('config', 'G-2M720E2M37');
 </script>
 <meta charset="UTF-8">
@@ -43,7 +62,7 @@
 </noscript>
 
 <header class="topbar">
-  <a href="index.html" class="brand" aria-label="back to PricePrint home">Price<span class="dot">·</span>Print</a>
+  <a href="index.html" class="brand" aria-label="back to PricePrint home"><img class="brand-logo" src="/android-icon-48x48.png" alt="" aria-hidden="true" />Price<span class="dot">·</span>Print</a>
   <div class="tagline">your private price memory</div>
 </header>
 
@@ -54,7 +73,9 @@
 <footer>
   <div id="footerStats"></div>
   <div class="footer-actions">
-    <button id="exportBtn" class="link-btn" type="button">Export data</button>
+    <button id="exportBtn" class="link-btn" type="button">Export JSON</button>
+    <span class="sep">·</span>
+    <button id="exportCsvBtn" class="link-btn" type="button">Export CSV</button>
     <span class="sep">·</span>
     <button id="importBtn" class="link-btn" type="button">Import data</button>
     <span class="sep">·</span>
@@ -65,10 +86,13 @@
     <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com</a>
     <span class="sep">·</span>
     <a href="mailto:hello@artivicolab.com">Contact us</a>
+    <span class="sep">·</span>
+    <a href="#" class="cookie-prefs-link" onclick="event.preventDefault(); if(window.priceprintShowConsent) window.priceprintShowConsent();">Cookie preferences</a>
   </div>
   <input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" hidden />
 </footer>
 
 <script type="module" src="js/app.js"></script>
+<script src="js/consent.js" defer></script>
 </body>
 </html>

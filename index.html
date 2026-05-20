@@ -6,8 +6,27 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  // Consent Mode v2 — deny everything until the visitor opts in via the
+  // banner (js/consent.js). wait_for_update buffers events briefly so a
+  // fast consent click still tags the initial pageview correctly.
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
+  try {
+    if (localStorage.getItem('priceprint.consent') === 'granted') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    }
+  } catch (e) {}
   gtag('js', new Date());
-
   gtag('config', 'G-2M720E2M37');
 </script>
 <meta charset="UTF-8">
@@ -405,9 +424,12 @@
   built by <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab</a>
   <span class="r-footer-sep">·</span>
   <a href="mailto:hello@artivicolab.com">contact us</a>
+  <span class="r-footer-sep">·</span>
+  <a href="#" onclick="event.preventDefault(); if(window.priceprintShowConsent) window.priceprintShowConsent();">cookie preferences</a>
 </footer>
 
 <script type="module" src="js/demo-bootstrap.js"></script>
 
+<script src="js/consent.js" defer></script>
 </body>
 </html>
