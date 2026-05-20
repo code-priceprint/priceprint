@@ -75,6 +75,13 @@
     />
   </div>
 
+  <!-- The requested path, injected by the inline script below. Hidden until
+       JS fills it so users without JS just see the headline + message. -->
+  <p class="not-found-path" hidden>
+    <span class="not-found-path-chip"></span>
+    <em>— what is that.</em>
+  </p>
+
   <h1 class="not-found-headline">that aisle doesn't exist.</h1>
   <p class="not-found-message">the rest of the store is open, though.</p>
 
@@ -106,5 +113,19 @@
 </footer>
 
 <script src="/js/consent.js" defer></script>
+<script>
+  // Echo the requested path back to the visitor so it doesn't feel like a
+  // generic 404 — `/hyts` becomes "hyts — what is that." Skip if they
+  // landed on the 404 page directly (path is empty, "/", or 404.html).
+  (function () {
+    const chip = document.querySelector('.not-found-path-chip');
+    if (!chip) return;
+    let path = (location.pathname || '').replace(/^\/+/, '').replace(/\/+$/, '');
+    if (!path || path === '404.html' || path === '404') return;
+    if (path.length > 60) path = path.slice(0, 60) + '…';
+    chip.textContent = path;
+    chip.closest('.not-found-path').hidden = false;
+  })();
+</script>
 </body>
 </html>
