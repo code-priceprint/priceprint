@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M720E2M37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
+  try {
+    if (localStorage.getItem('priceprint.consent') === 'granted') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    }
+  } catch (e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-2M720E2M37');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>404 — item not found in your history — PricePrint</title>
+<meta name="description" content="That page isn't in PricePrint's catalog. Head back to the home page or jump straight to the most useful tabs.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0f7c5a">
+<link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/" class="brand" aria-label="back to PricePrint home">
+    <img class="brand-logo" src="/android-icon-48x48.png" alt="" aria-hidden="true" />
+    Price<span class="dot">·</span>Print
+  </a>
+  <div class="tagline">your private price memory</div>
+</header>
+
+<section class="not-found">
+  <div class="not-found-receipt">
+    <div class="not-found-header">PRICE·PRINT · RECEIPT #404</div>
+    <div class="not-found-rule"></div>
+    <div class="not-found-line">
+      <span class="not-found-item">requested page</span>
+      <span class="not-found-dots"></span>
+      <span class="not-found-price">NOT FOUND</span>
+    </div>
+    <div class="not-found-line">
+      <span class="not-found-item">total damage</span>
+      <span class="not-found-dots"></span>
+      <span class="not-found-price">$0.00</span>
+    </div>
+    <div class="not-found-rule"></div>
+    <p class="not-found-message">that aisle doesn't exist — but the rest of the store is open.</p>
+  </div>
+
+  <div class="not-found-actions">
+    <a href="/" class="not-found-cta not-found-cta-primary">Back to home</a>
+    <div class="not-found-quick">
+      or jump to:
+      <a href="/log-price.html">log a price</a>
+      <span class="sep">·</span>
+      <a href="/shopping.html">shopping list</a>
+      <span class="sep">·</span>
+      <a href="/compare.html">compare stores</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-actions">
+    <a href="/">About PricePrint</a>
+    <span class="sep">·</span>
+    <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com</a>
+    <span class="sep">·</span>
+    <a href="mailto:hello@artivicolab.com">Contact us</a>
+    <span class="sep">·</span>
+    <a href="#" class="cookie-prefs-link" onclick="event.preventDefault(); if(window.priceprintShowConsent) window.priceprintShowConsent();">Cookie preferences</a>
+  </div>
+</footer>
+
+<script src="js/consent.js" defer></script>
+</body>
+</html>

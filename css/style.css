@@ -3406,3 +3406,124 @@ main.below-fold { max-width: 1200px; padding: 0 24px 64px; }
   .consent-banner-actions { gap: 8px; }
   .consent-btn          { flex: 1; padding: 12px 10px; }
 }
+
+/* ---------- 404 page ---------- */
+/* Receipt-style "page not found" so the dead end stays on-brand. The
+   receipt prints out a not-found line item, then offers the home page +
+   the three most-used tabs as quick exits. */
+
+.not-found {
+  max-width: 560px;
+  margin: 60px auto 40px;
+  padding: 0 20px;
+  text-align: center;
+}
+.not-found-receipt {
+  background: #fefdf5;
+  background-image: var(--paper-watermark);
+  background-repeat: repeat;
+  padding: 28px 26px 24px;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.10),
+    0 2px 4px rgba(0, 0, 0, 0.06);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color: #1a1a1a;
+  position: relative;
+}
+.not-found-receipt::before,
+.not-found-receipt::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background-image: radial-gradient(circle at 5px 0, transparent 5px, #fefdf5 5px);
+  background-size: 10px 10px;
+  background-repeat: repeat-x;
+}
+.not-found-receipt::before { top: -10px; }
+.not-found-receipt::after  { bottom: -10px; transform: scaleY(-1); }
+.not-found-header {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #b5b0a1;
+  margin-bottom: 14px;
+}
+.not-found-rule {
+  border-top: 1px dashed #b5b0a1;
+  margin: 12px 0;
+}
+.not-found-line {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 14px;
+  padding: 4px 0;
+  text-align: left;
+}
+.not-found-item {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.not-found-dots {
+  flex: 1;
+  border-bottom: 1px dotted #8a8480;
+  transform: translateY(-3px);
+  margin: 0 4px;
+}
+.not-found-price {
+  font-weight: 800;
+  color: var(--err);
+  letter-spacing: 0.04em;
+}
+.not-found-line:nth-of-type(2) .not-found-price {
+  color: #1a1a1a;
+}
+.not-found-message {
+  font-family: var(--font);
+  font-style: italic;
+  font-size: 14px;
+  color: #3a3835;
+  margin: 14px 0 0;
+  line-height: 1.5;
+  text-align: center;
+}
+.not-found-actions {
+  margin-top: 36px;
+  text-align: center;
+}
+.not-found-cta {
+  display: inline-block;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--brand);
+  color: #fff;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 3px;
+  transition: opacity 0.15s ease;
+}
+.not-found-cta:hover { opacity: 0.92; }
+.not-found-quick {
+  margin-top: 22px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  color: #5a5751;
+}
+.not-found-quick a {
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(10, 94, 68, 0.5);
+}
+.not-found-quick a:hover { border-bottom-style: solid; }
+.not-found-quick .sep { margin: 0 6px; color: #b5b0a1; }
+@media (max-width: 640px) {
+  .not-found    { margin: 32px auto 24px; }
+  .not-found-cta { display: block; padding: 14px 18px; }
+}
