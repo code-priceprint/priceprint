@@ -3420,10 +3420,10 @@ main.below-fold { max-width: 1200px; padding: 0 24px 64px; }
 }
 .not-found-mascot {
   display: block;
-  width: 100%;
-  max-width: 320px;
+  width: 140px;
+  max-width: 100%;
   height: auto;
-  margin: 0 auto 24px;
+  margin: 0 auto 16px;
 }
 .not-found-headline {
   font-family: var(--font);
@@ -3475,6 +3475,6 @@ main.below-fold { max-width: 1200px; padding: 0 24px 64px; }
 .not-found-quick .sep { margin: 0 6px; color: #b5b0a1; }
 @media (max-width: 640px) {
   .not-found        { margin: 24px auto 24px; }
-  .not-found-mascot { max-width: 240px; }
+  .not-found-mascot { width: 110px; }
   .not-found-cta    { display: block; padding: 14px 18px; }
 }
