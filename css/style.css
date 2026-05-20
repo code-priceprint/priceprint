@@ -3478,3 +3478,40 @@ main.below-fold { max-width: 1200px; padding: 0 24px 64px; }
   .not-found-mascot { width: 110px; }
   .not-found-cta    { display: block; padding: 14px 18px; }
 }
+
+/* ---------- privacy page ---------- */
+/* Inherits the .tab-intro and .tab-explainer layout; only needs list styling
+   and a small last-updated stamp. */
+
+.tab-explainer .privacy-list {
+  margin: 0 0 14px 22px;
+  padding: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  color: #2a2826;
+}
+.tab-explainer .privacy-list li { margin-bottom: 6px; }
+.tab-explainer .privacy-list strong { color: #1a1a1a; }
+.tab-explainer .privacy-list code,
+.tab-explainer code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  background: rgba(10, 94, 68, 0.08);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--brand);
+}
+.tab-explainer a {
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(10, 94, 68, 0.5);
+}
+.tab-explainer a:hover { border-bottom-style: solid; }
+.privacy-lastmod {
+  margin-top: 24px !important;
+  padding-top: 16px;
+  border-top: 1px dashed #c9c4b4;
+  font-size: 13px !important;
+  color: #6b6657;
+}

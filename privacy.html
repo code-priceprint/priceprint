@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M720E2M37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
+  try {
+    if (localStorage.getItem('priceprint.consent') === 'granted') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    }
+  } catch (e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-2M720E2M37');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy — PricePrint</title>
+<meta name="description" content="PricePrint is a static site. Your logged grocery prices never leave your device. We use Google Analytics for page visit counts only, with consent.">
+<meta name="theme-color" content="#0f7c5a">
+<link rel="canonical" href="https://priceprint.artivicolab.com/privacy.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Privacy — PricePrint">
+<meta property="og:description" content="A short, honest privacy policy: your price log stays on your device; we use Google Analytics with consent.">
+<meta property="og:url" content="https://priceprint.artivicolab.com/privacy.html">
+<meta property="og:image" content="https://priceprint.artivicolab.com/og-image.jpg">
+<meta property="og:image:width" content="1298">
+<meta property="og:image:height" content="682">
+<meta property="og:image:alt" content="PricePrint — your personal grocery price memory">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Privacy — PricePrint">
+<meta name="twitter:description" content="A short, honest privacy policy: your price log stays on your device; we use Google Analytics with consent.">
+<meta name="twitter:image" content="https://priceprint.artivicolab.com/og-image.jpg">
+<link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/" class="brand" aria-label="back to PricePrint home">
+    <img class="brand-logo" src="/android-icon-48x48.png" alt="" aria-hidden="true" />
+    Price<span class="dot">·</span>Print
+  </a>
+  <div class="tagline">your private price memory</div>
+</header>
+
+<section class="tab-intro">
+  <p class="tab-intro-eyebrow">Privacy</p>
+  <h1>What we know about you — and why it's almost nothing.</h1>
+  <p class="tab-intro-lede">PricePrint is a static website. There is no PricePrint server holding your grocery prices, your shopping list, or anything else you type into the app. This page explains what the architecture actually does, and the one place we do collect data: Google Analytics page-visit counts, only after you accept the consent banner.</p>
+</section>
+
+<section class="tab-explainer">
+  <h2>1. The price log, the shopping list, every other piece of your data</h2>
+  <p>Everything you log — items, prices, stores, shopping lists, basket totals — is written to <em>IndexedDB</em>, which is a private database that lives inside your browser on this specific device. It is not synced. It is not backed up to a cloud. We do not have a server it could be sent to even if we wanted one.</p>
+  <p>If you wipe this device's storage, clear your browser, or use a different browser, that data does not exist in any other location. Use the <em>Export data</em> button in the footer of any tab to download a JSON copy you control.</p>
+
+  <h2>2. Google Analytics (only with your consent)</h2>
+  <p>When you click <em>Accept</em> on the cookie banner, we load Google Analytics 4 (measurement ID <code>G-2M720E2M37</code>). It records:</p>
+  <ul class="privacy-list">
+    <li>which page you visited (e.g. <code>/compare.html</code>)</li>
+    <li>roughly which country and region the visit came from</li>
+    <li>which device type and browser made the visit</li>
+    <li>aggregated interaction events like scroll depth and outbound link clicks</li>
+  </ul>
+  <p>If you click <em>Decline</em>, Google Analytics receives a single anonymous "consent denied" signal without a client identifier, then stops. We never see anything about what you log inside the app — Google doesn't either, because that data never leaves your browser to be sent anywhere.</p>
+  <p>You can change your mind any time with the <em>Cookie preferences</em> link in the footer.</p>
+
+  <h2>3. What about ads?</h2>
+  <p>We don't run ads today. We may add them in the future to keep the site free; if and when that happens, they'll be governed by the same consent mechanism above — declined by default until you opt in.</p>
+
+  <h2>4. Cookies and local storage on this device</h2>
+  <ul class="privacy-list">
+    <li><strong>Google Analytics cookies</strong> — set only after you accept consent. Used to count unique visitors and sessions. You can clear them by clearing your browser cookies.</li>
+    <li><strong>localStorage <code>priceprint.consent</code></strong> — remembers whether you accepted or declined, so the banner doesn't show on every visit.</li>
+    <li><strong>IndexedDB <code>priceprint</code></strong> (and <code>priceprint-demo</code> on the home page) — holds your items, prices, stores, baskets. Yours, on this device, never sent anywhere.</li>
+  </ul>
+
+  <h2>5. Data retention and your rights</h2>
+  <p>We retain nothing about you on a server we control, because there is no server we control. Your right to delete is built into the app: <em>Wipe all data</em> in the footer of any tab clears the local database immediately and irreversibly.</p>
+  <p>For the Google Analytics data tied to your visits, you can submit a deletion request directly to Google via their <a href="https://support.google.com/analytics/answer/9450800" target="_blank" rel="noopener">Analytics data deletion process</a>.</p>
+
+  <h2>6. Children</h2>
+  <p>PricePrint is not directed at children under 13. We do not knowingly enable any feature that targets or profiles minors.</p>
+
+  <h2>7. International transfers</h2>
+  <p>Page-visit data accepted via Google Analytics is processed by Google according to their <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">privacy policy</a>, which may include transfer to servers outside your country.</p>
+
+  <h2>8. Changes</h2>
+  <p>If this policy changes materially, we will update the "last updated" date below and surface the change on the home page.</p>
+
+  <h2>9. Contact</h2>
+  <p>Questions, concerns, or a data request: <a href="mailto:artivicolab@gmail.com">Contact us</a>.</p>
+
+  <p class="privacy-lastmod"><em>Last updated: May 20, 2026.</em></p>
+</section>
+
+<footer>
+  <div class="footer-actions">
+    <a href="/">About PricePrint</a>
+    <span class="sep">·</span>
+    <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com</a>
+    <span class="sep">·</span>
+    <a href="mailto:artivicolab@gmail.com">Contact us</a>
+    <span class="sep">·</span>
+    <a href="/privacy.html">Privacy</a>
+    <span class="sep">·</span>
+    <a href="#" class="cookie-prefs-link" onclick="event.preventDefault(); if(window.priceprintShowConsent) window.priceprintShowConsent();">Cookie preferences</a>
+  </div>
+</footer>
+
+<script src="/js/consent.js" defer></script>
+</body>
+</html>
