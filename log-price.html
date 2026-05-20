@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M720E2M37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2M720E2M37');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Log a grocery price in under 10 seconds — PricePrint</title>
+<meta name="description" content="Item, store, size, price. PricePrint's logging screen is designed to be fast enough to use in the aisle — four fields, one tap to save, fully offline.">
+<meta name="theme-color" content="#0f7c5a">
+<link rel="canonical" href="https://priceprint.artivicolab.com/log-price.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Log a grocery price in under 10 seconds — PricePrint">
+<meta property="og:description" content="Four fields, one tap. PricePrint's logging screen is built for the aisle, not the desk.">
+<meta property="og:url" content="https://priceprint.artivicolab.com/log-price.html">
+<link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-screen="entry">
+<noscript>
+  <style>.topbar, .tabs, main, footer, .watermark, .tab-intro, .tab-explainer { display: none !important; } body { background: transparent !important; }</style>
+  <div class="noscript-screen"><div class="noscript-card"><div class="noscript-title">JAVASCRIPT REQUIRED</div><div class="noscript-brand">Price<span class="dot">·</span>Print</div><p class="noscript-body">PricePrint runs entirely in your browser using JavaScript — that's why it works offline and keeps your data on this device.</p><p class="noscript-body noscript-body-muted">Please enable JavaScript in your browser settings and reload this page.</p><p class="noscript-promise">Your data still never leaves this device.</p></div></div>
+</noscript>
+
+<header class="topbar">
+  <a href="index.html" class="brand" aria-label="back to PricePrint home">Price<span class="dot">·</span>Print</a>
+  <div class="tagline">your private price memory</div>
+</header>
+
+<section class="tab-intro">
+  <p class="tab-intro-eyebrow">Log price</p>
+  <h1>Log a grocery price in under ten seconds.</h1>
+  <p class="tab-intro-lede">Item, store, size, price. That's the whole form. PricePrint is built so that logging a price in the aisle is faster than reading the sale tag — because if it isn't, you won't do it.</p>
+</section>
+
+<nav id="tabs" class="tabs" aria-label="screens"></nav>
+
+<main id="screen" role="main"></main>
+
+<section class="tab-explainer">
+  <h2>How it works</h2>
+  <p>Every entry has four fields. The <em>item</em> autocompletes from things you've logged before, so the second banana log is one tap. <em>Store</em> works the same way. <em>Size</em> and <em>unit</em> let PricePrint compute the per-ounce or per-count price behind the scenes — that's what makes the Compare and Sale Check screens actually work.</p>
+  <p>Hit save and the log is written to your device's IndexedDB. No request goes out. No server gets your shopping list. The same database is what powers every other screen.</p>
+
+  <details class="tab-faq">
+    <summary>FAQ</summary>
+    <dl>
+      <dt>Do I need an account?</dt>
+      <dd>No. PricePrint has no accounts and no sign-up. The "your data" stored locally is yours alone — there's literally no place to sync it to.</dd>
+
+      <dt>What if I forget the size on the package?</dt>
+      <dd>Skip the size field and just log the price you paid. You'll lose the per-unit comparison for that one log, but the price still counts toward your history.</dd>
+
+      <dt>Can I edit a log later if I made a mistake?</dt>
+      <dd>Yes. Open the History tab, tap the row, edit any field, save. Or delete the log entirely.</dd>
+
+      <dt>Why not let the camera scan the price tag?</dt>
+      <dd>That would either need a server (breaks the privacy promise) or a 50MB OCR model in your browser (breaks the speed promise). Typing four fields is faster than waiting for any scanner.</dd>
+    </dl>
+  </details>
+</section>
+
+<footer>
+  <div id="footerStats"></div>
+  <div class="footer-actions">
+    <button id="exportBtn" class="link-btn" type="button">Export data</button>
+    <span class="sep">·</span>
+    <button id="importBtn" class="link-btn" type="button">Import data</button>
+    <span class="sep">·</span>
+    <button id="wipeBtn" class="link-btn link-danger" type="button">Wipe all data</button>
+    <span class="sep">·</span>
+    <a href="index.html">About PricePrint</a>
+    <span class="sep">·</span>
+    <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com</a>
+    <span class="sep">·</span>
+    <a href="mailto:hello@artivicolab.com">Contact us</a>
+  </div>
+  <input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" hidden />
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

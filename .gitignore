@@ -1,0 +1,11 @@
+.DS_Store
+Thumbs.db
+*.log
+
+# editor noise we don't want to push
+*.swp
+*.swo
+.idea/
+
+# any future npm tooling — none today, but if anyone runs npm in this dir
+node_modules/

@@ -1,0 +1,3236 @@
+/* PricePrint — mobile-first. Optimized for one-thumb use in a grocery aisle. */
+
+:root {
+  --bg: #fafaf7;
+  --surface: #ffffff;
+  --ink: #1a1a1a;
+  --muted: #6b6b6b;
+  --line: #e5e3dc;
+  --brand: #0a5e44;
+  --brand-ink: #ffffff;
+  --accent: #d97706;
+  --ok: #15803d;
+  --err: #b91c1c;
+  --radius: 12px;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 2px 8px rgba(0,0,0,.04);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+/* paper-grain background lives on <html> so overscroll/rubber-band areas
+   share the same texture. Tiled SVG noise — no image file. */
+html {
+  background-color: #d5d0be;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='1' stitchTiles='stitch' seed='8'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.11 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+/* Themed scrollbars on every scroll container (page, dialogs, dropdowns,
+   .proof-screen, code panes). Track is transparent so the receipt paper /
+   page texture shows through; thumb is the warm brown with a transparent
+   ring + background-clip:padding-box so it reads as a thin pill on any
+   surface, not a bar glued to a gray strip. */
+* {
+  scrollbar-color: #8a8472 transparent;
+  scrollbar-width: thin;
+}
+*::-webkit-scrollbar { width: 12px; height: 12px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: #8a8472;
+  border: 3px solid transparent;
+  border-radius: 8px;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover { background: #4a463b; background-clip: padding-box; }
+*::-webkit-scrollbar-corner { background: transparent; }
+body {
+  font-family: var(--font);
+  background: transparent;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--brand); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- top bar ---------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(213, 208, 190, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px dashed #a8a294;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+/* Override the generic `a` color/underline rules so the brand reads as
+   a deliberate wordmark, not a generic link. */
+a.brand:hover { text-decoration: none; color: var(--brand); }
+.brand .dot { color: var(--brand); }
+.tagline {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: #5a5751;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- tabs ---------- */
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  padding: 6px 12px 0;
+  overflow-x: auto;
+  background: rgba(213, 208, 190, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px dashed #a8a294;
+  position: sticky;
+  top: 51px;
+  z-index: 9;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  border: 0;
+  background: transparent;
+  padding: 12px 16px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a5751;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.tab:hover { color: var(--ink); }
+.tab.active {
+  color: var(--brand);
+  border-bottom-color: var(--brand);
+  font-weight: 700;
+}
+
+/* horizontal-scroll hint — sticky to the right edge of the visible tab strip,
+   gradient mask fades the underlying tab content, animated arrow nudges. */
+.tabs-scroll-hint {
+  position: sticky;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 10px 0 40px;
+  margin-left: auto;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--brand);
+  pointer-events: none;
+  background: linear-gradient(to right,
+    rgba(213, 208, 190, 0) 0%,
+    rgba(213, 208, 190, 0.85) 55%,
+    rgba(213, 208, 190, 1) 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.tabs.has-overflow .tabs-scroll-hint {
+  opacity: 1;
+  animation: tabs-scroll-nudge 1.4s ease-in-out infinite;
+}
+@keyframes tabs-scroll-nudge {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(5px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tabs.has-overflow .tabs-scroll-hint { animation: none; }
+}
+
+/* ---------- main ---------- */
+
+main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+/* shared data-list view used by History / Sale check / List / Stores / Inflation */
+.list-head {
+  display: flex;
+  justify-content: space-between;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b6657;
+  padding-bottom: 8px;
+  margin-bottom: 6px;
+  border-bottom: 1px dashed #a8a294;
+}
+.data-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.data-row {
+  padding: 12px 4px;
+  border-bottom: 1px dotted #c9c4b4;
+  display: grid;
+  gap: 4px;
+}
+.data-row:last-child { border-bottom: 0; }
+.data-row-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.data-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+}
+.data-cat {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8a8480;
+  font-weight: 600;
+}
+.data-row-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #3a3835;
+}
+.data-row-meta-empty { font-style: italic; color: #8a8480; }
+.data-unit-price { font-weight: 700; color: var(--brand); }
+.data-row-date {
+  font-size: 10.5px;
+  color: #8a8480;
+  letter-spacing: 0.04em;
+}
+.data-tag {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid;
+}
+.data-tag-sale { color: var(--accent); border-color: var(--accent); background: rgba(217, 119, 6, 0.08); }
+.data-tag-real { color: var(--ok); border-color: var(--ok); background: rgba(21, 128, 61, 0.08); }
+.data-tag-fake { color: var(--err); border-color: var(--err); background: rgba(185, 28, 28, 0.08); }
+.data-tag-top  { color: var(--accent); border-color: var(--accent); background: rgba(217, 119, 6, 0.10); }
+
+/* History summary line — pills showing key stats for the current filter */
+.history-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  margin: 4px 0 10px;
+  padding: 10px 4px;
+  border-bottom: 1px dotted #c9c4b4;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  color: #5a5751;
+}
+.hs-pill {
+  padding: 4px 8px;
+  background: rgba(10, 94, 68, 0.06);
+  border: 1px dashed #b5b0a1;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.hs-pill strong { color: var(--brand); font-weight: 800; }
+
+/* Price-trend sparkline on the item detail modal */
+.price-chart {
+  margin: 12px 0 18px;
+  padding: 12px;
+  background: rgba(10, 94, 68, 0.04);
+  border: 1px dashed #c9c4b4;
+  border-radius: 6px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.price-chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.price-chart-title {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5a5751;
+}
+.price-chart-trend {
+  font-size: 11.5px;
+  font-weight: 700;
+  font-style: italic;
+}
+.price-chart-trend.trend-up   { color: var(--err); }
+.price-chart-trend.trend-down { color: var(--ok); }
+.price-chart-trend.trend-flat { color: #8a8480; }
+
+.price-chart-svg {
+  width: 100%;
+  height: 90px;
+  display: block;
+}
+.price-chart-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #3a3835;
+  margin-top: 6px;
+}
+.price-chart-meta .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+.price-chart-meta .dot-min { background: var(--ok); }
+.price-chart-meta .dot-max { background: var(--err); }
+
+/* Per-store color legend below the chart */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin: 6px 0 4px;
+  font-size: 10.5px;
+  color: #3a3835;
+}
+.chart-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.chart-legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.price-chart-dates {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9.5px;
+  color: #8a8480;
+  margin-top: 2px;
+  letter-spacing: 0.05em;
+}
+
+/* History search bar — filters as you type, with a clear button */
+.history-search {
+  position: relative;
+  margin: 4px 0 8px;
+}
+.history-search input {
+  width: 100%;
+  padding: 12px 36px 12px 12px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  border: 0;
+  border-bottom: 1px dashed #b5b0a1;
+  background: transparent;
+  color: var(--ink);
+}
+.history-search input::placeholder { color: #b0aa9c; font-style: italic; }
+.history-search input:focus { outline: none; border-bottom: 1px solid var(--brand); }
+.history-search-clear {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  background: transparent;
+  border: 0;
+  color: #8a8480;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.history-search-clear:hover { background: rgba(0,0,0,.05); color: var(--err); }
+
+/* sort selector — small dropdown above paginated lists, fully custom-styled */
+.list-sort {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px dotted #c9c4b4;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  flex-wrap: wrap;
+}
+.list-sort-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b6657;
+}
+
+/* Custom dropdown component (dropdown.js) — receipt-themed, no native styling. */
+.dd-host { position: relative; display: inline-block; }
+.dd-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 4px 4px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px dashed var(--brand);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--brand);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+.dd-trigger:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.dd-host.is-open .dd-trigger { border-bottom-style: solid; }
+.dd-chevron {
+  font-size: 10px;
+  transition: transform 0.15s ease;
+  color: var(--brand);
+}
+.dd-host.is-open .dd-chevron { transform: rotate(180deg); }
+
+.dd-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 100%;
+  background: #fefdf5;
+  border: 1px dashed var(--brand);
+  border-radius: 4px;
+  list-style: none;
+  padding: 4px;
+  margin: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  z-index: 200;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14), 0 2px 4px rgba(0, 0, 0, 0.06);
+  white-space: nowrap;
+}
+.dd-option {
+  padding: 9px 14px 9px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  border-radius: 3px;
+  position: relative;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.dd-option:hover { background: rgba(10, 94, 68, 0.10); color: var(--brand); }
+.dd-option.is-selected {
+  color: var(--brand);
+  font-weight: 800;
+}
+.dd-option.is-selected::before {
+  content: "✓";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: var(--brand);
+}
+.data-delta {
+  font-weight: 800;
+  font-size: 13px;
+}
+.data-delta-good { color: var(--ok); }
+.data-delta-bad  { color: var(--err); }
+
+.empty-state {
+  color: #5a5751;
+  font-size: 14px;
+  line-height: 1.55;
+  text-align: center;
+  padding: 16px 0 4px;
+}
+
+/* clickable rows in History / List / Stores */
+.data-row.clickable { cursor: pointer; transition: background 0.12s ease; }
+.data-row.clickable:hover { background: rgba(10, 94, 68, 0.06); }
+
+/* Edit-confirmation flash — pulses brand-green on the just-edited row so the
+   user sees what they changed after the modal closes. */
+.data-row.flash {
+  animation: row-flash 1.8s ease;
+  position: relative;
+  z-index: 1;
+}
+@keyframes row-flash {
+  0%   { background: rgba(10, 94, 68, 0.35); box-shadow: inset 3px 0 0 var(--brand); }
+  20%  { background: rgba(10, 94, 68, 0.22); box-shadow: inset 3px 0 0 var(--brand); }
+  100% { background: transparent; box-shadow: inset 0 0 0 transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .data-row.flash { animation: none; background: rgba(10, 94, 68, 0.18); }
+}
+
+/* per-row store slider on the Compare screen — arrows cycle through every
+   store you've logged this item at, one at a time */
+.row-slider {
+  display: grid;
+  grid-template-columns: 24px 1fr 24px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+.row-arrow {
+  width: 24px;
+  height: 24px;
+  border: 1px dashed #a8a294;
+  border-radius: 50%;
+  background: #fefdf5;
+  color: var(--brand);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+.row-arrow:hover {
+  background: var(--brand);
+  color: #fefdf5;
+  border-color: var(--brand);
+}
+.row-arrow:active { transform: scale(0.9); }
+.row-slide-content {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.row-rank {
+  color: #8a8480;
+  font-weight: 700;
+  font-size: 12px;
+  min-width: 18px;
+}
+.row-store { color: var(--ink); font-weight: 700; }
+.row-price { color: var(--brand); font-weight: 800; }
+.row-delta { color: var(--err); font-weight: 800; font-size: 12.5px; }
+.row-tag {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid;
+}
+.row-tag-best  { color: var(--ok);  border-color: var(--ok); background: rgba(21, 128, 61, 0.08); }
+.row-tag-worst { color: var(--err); border-color: var(--err); background: rgba(185, 28, 28, 0.08); }
+.row-progress {
+  display: flex;
+  justify-content: space-between;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10.5px;
+  color: #8a8480;
+  margin-top: 2px;
+  padding-left: 32px;
+}
+
+/* "Show more / Show less" footer below paginated lists */
+.show-more-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 18px 0 4px;
+  padding-top: 12px;
+  border-top: 1px dashed #c9c4b4;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.show-more-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.show-more-actions .sep { color: #b5b0a1; }
+.show-more-note { font-size: 10.5px; color: #8a8480; letter-spacing: 0.05em; }
+
+/* edit modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 18, 12, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1000;
+  animation: modal-fade 0.18s ease;
+}
+.modal-card {
+  width: 100%;
+  max-width: 460px;
+  max-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
+  /* overflow visible so the .entry torn-paper zigzag edges (top:-8 / bottom:-8)
+     don't get clipped. Scrolling happens on the inner .modal-scroll. */
+  overflow: visible;
+  animation: modal-rise 0.22s ease;
+}
+/* Inner scrollable area — keeps the receipt edges of the outer .modal-card
+   visible while letting tall content scroll. */
+.modal-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* small dashed inset at the top so content doesn't crash into the screen-title */
+  margin-top: 4px;
+  padding-top: 4px;
+}
+/* Screen-title acts as a fixed header inside the modal */
+.modal-card .screen-title {
+  flex: 0 0 auto;
+  margin-top: 0;
+}
+.modal-body {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed #c9c4b4;
+}
+
+/* Add-store bar above the Stores list */
+.add-store-bar {
+  margin: 0 0 12px;
+}
+.add-store-bar .modal-top-action { margin: 0; }
+
+/* Inline store location chip next to the store name */
+.store-loc {
+  font-size: 12px;
+  color: #6b6657;
+  font-weight: 500;
+  font-style: italic;
+  margin-left: 4px;
+}
+.store-best-note {
+  font-size: 10.5px;
+  color: var(--brand);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+/* Store detail modal — 3 stat tiles + best/worst lists */
+.store-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin: 4px 0 16px;
+  padding: 10px 0;
+  border-top: 1px dashed #c9c4b4;
+  border-bottom: 1px dashed #c9c4b4;
+}
+.store-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.store-stat-num {
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: 800;
+  color: var(--brand);
+}
+.store-stat-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6b6657;
+  text-align: center;
+}
+
+/* "Log new price" shortcut at the top of an item detail modal */
+.modal-top-action {
+  display: block;
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  background: rgba(10, 94, 68, 0.06);
+  border: 1.5px dashed var(--brand);
+  border-radius: 6px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: 0.04em;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.modal-top-action:hover {
+  background: var(--brand);
+  color: #fefdf5;
+  border-style: solid;
+}
+
+/* per-store price comparison inside the item-detail modal */
+.compare-summary {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #2a2826;
+  margin: 0 0 12px;
+  text-align: center;
+}
+.compare-summary strong { color: var(--brand); }
+.compare-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.compare-row {
+  padding: 10px 6px;
+  border-bottom: 1px dotted #c9c4b4;
+  display: grid;
+  gap: 2px;
+}
+.compare-row:last-child { border-bottom: 0; }
+.compare-row.is-best  { background: rgba(21, 128, 61, 0.07); }
+.compare-row.is-worst { background: rgba(185, 28, 28, 0.06); }
+.compare-row-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.compare-store {
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.compare-badge {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 2px 5px;
+  border-radius: 3px;
+  border: 1px solid;
+}
+.compare-badge-best  { color: var(--ok);  border-color: var(--ok); }
+.compare-badge-worst { color: var(--err); border-color: var(--err); }
+.compare-badge-low   { color: #8a8480;    border-color: #b5b0a1; background: rgba(0,0,0,0.03); }
+
+/* Low-confidence rows (single observation) — visually dimmed so the user can
+   tell the ranking is provisional, plus an italic note in the meta row. */
+.compare-row.is-low-confidence {
+  opacity: 0.65;
+}
+.compare-row.is-low-confidence .compare-count { font-style: italic; }
+.compare-row-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12px;
+  color: #5a5751;
+}
+.compare-price {
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--brand);
+}
+.compare-count {
+  font-size: 10.5px;
+  color: #8a8480;
+}
+.compare-footnote {
+  margin: 12px 0 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: #6b6657;
+  text-align: center;
+  font-style: italic;
+}
+@keyframes modal-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modal-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.placeholder-card { text-align: center; }
+
+/* Compare screen — hero "cheapest store" scoreboard, designed for screenshots.
+   Thick double-ring border, brand-tinted fill, big numbers, in-card attribution. */
+.compare-hero-box {
+  position: relative;
+  text-align: center;
+  padding: 20px 16px 30px;
+  margin: 4px 0 16px;
+  border: 3px dashed var(--brand);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(10, 94, 68, 0.10), rgba(10, 94, 68, 0.04));
+  box-shadow: inset 0 0 0 4px rgba(254, 253, 245, 0.6);
+}
+/* Upper hero section — label + name centered as a text block in the middle
+   column, badge in the right column aligned to that block's vertical center. */
+.compare-hero-upper {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 10px;
+}
+.compare-hero-text {
+  grid-column: 2;
+  text-align: center;
+}
+.compare-hero-badge {
+  grid-column: 3;
+  justify-self: end;
+  align-self: center; /* centers against label+name block, not just the name */
+  width: clamp(95px, 20vw, 130px);
+  height: auto;
+  margin-right: 4px;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+.compare-hero-name {
+  position: relative;
+  z-index: 1;
+  text-shadow:
+    0 0 6px rgba(254, 253, 245, 0.85),
+    0 0 12px rgba(254, 253, 245, 0.55);
+}
+.compare-hero-label {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #6b6657;
+  text-transform: uppercase;
+}
+.compare-hero-name {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: clamp(32px, 7vw, 48px);
+  font-weight: 800;
+  margin: 6px 0 14px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.compare-hero-scoreboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  padding: 10px 0;
+  border-top: 1px dashed rgba(10, 94, 68, 0.3);
+  border-bottom: 1px dashed rgba(10, 94, 68, 0.3);
+  margin-bottom: 10px;
+}
+.compare-hero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+/* Savings carousel — auto-rotates between annual and monthly every 4s.
+   No arrows / buttons; pure CSS cross-fade. */
+.savings-carousel {
+  position: relative;
+  min-height: 56px;
+  width: 100%;
+}
+.savings-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  opacity: 0;
+  animation: savings-cycle 8s ease infinite;
+}
+.savings-annual  { animation-delay: 0s; }
+.savings-monthly { animation-delay: 4s; }
+@keyframes savings-cycle {
+  0%, 50%, 100% { opacity: 0; }
+  3%, 47%       { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .savings-slide { animation: none; opacity: 0; }
+  .savings-annual { opacity: 1; }
+}
+.compare-hero-stat-num {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: clamp(20px, 4.6vw, 28px);
+  font-weight: 800;
+  color: var(--brand);
+  letter-spacing: -0.01em;
+}
+.compare-hero-stat-label {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5a5751;
+}
+.compare-hero-sub {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  color: #5a5751;
+  font-style: italic;
+}
+.compare-hero-mark {
+  position: absolute;
+  bottom: 6px;
+  right: 12px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(10, 94, 68, 0.55);
+}
+.compare-hero-actions { margin-top: 14px; text-align: center; }
+.compare-hero-actions .primary {
+  width: auto;
+  display: inline-block;
+  min-width: 220px;
+}
+
+/* Trip-list modal — store-grouped shopping plan */
+.trip-card { max-width: 520px; }
+.trip-intro {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+  color: #2a2826;
+  margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #c9c4b4;
+}
+.trip-intro strong { color: var(--brand); font-size: 16px; font-weight: 800; }
+.trip-group {
+  margin-bottom: 18px;
+  padding: 10px 12px 12px;
+  border: 1px dashed #b5b0a1;
+  border-radius: 4px;
+}
+.trip-group-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px dashed #c9c4b4;
+}
+.trip-group-name {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+.trip-group-stats {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: var(--brand);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.trip-items { list-style: none; padding: 0; margin: 0; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.trip-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 5px 2px;
+  font-size: 13px;
+  border-bottom: 1px dotted #d4cfbe;
+}
+.trip-item:last-child { border-bottom: 0; }
+.trip-item-name { color: var(--ink); font-weight: 600; }
+.trip-item-price { color: var(--brand); font-weight: 700; font-size: 12px; }
+
+/* Ranking weight graduation — first place reads larger and bolder, lower ranks
+   step down so screenshots show a clear hierarchy at a glance. */
+.ranking-list .data-row.tier-1 .data-name { font-size: 17px; font-weight: 800; }
+.ranking-list .data-row.tier-1 .data-delta { font-size: 15px; }
+.ranking-list .data-row.tier-podium .data-name { font-size: 15px; font-weight: 700; }
+.ranking-list .data-row.tier-podium .data-delta { font-size: 13.5px; }
+.ranking-list .data-row.tier-rest .data-name { font-size: 13px; font-weight: 600; color: #3a3835; }
+.ranking-list .data-row.tier-rest .data-delta { font-size: 12px; opacity: 0.85; }
+
+.data-row.is-best-store { background: rgba(10, 94, 68, 0.08); }
+.rank-medal { color: var(--accent); font-size: 18px; }
+.rank-num   { color: #8a8480; font-weight: 700; font-size: 12px; margin-right: 2px; }
+
+/* List-head hint — small instructional text de-emphasized vs the section label */
+.list-head-hint {
+  font-weight: 500;
+  color: #8a8480;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  font-style: italic;
+}
+
+/* Stacked spread badge: percent on top, dollar diff underneath */
+.row-spread-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  text-align: right;
+}
+.row-spread-dollars {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #5a5751;
+}
+.row-freshness {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10.5px;
+  color: #8a8480;
+  font-style: italic;
+}
+
+/* Inflation hero number */
+.inflation-hero {
+  text-align: center;
+  padding: 16px 0 20px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed #a8a294;
+}
+.inflation-label {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: #5a5751;
+}
+.inflation-number {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: clamp(40px, 9vw, 60px);
+  font-weight: 800;
+  margin: 6px 0;
+  letter-spacing: -0.01em;
+}
+.inflation-number.is-up   { color: var(--err); }
+.inflation-number.is-down { color: var(--ok); }
+.inflation-sub {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  color: #6b6657;
+  font-style: italic;
+}
+
+/* CPI comparison line beneath the hero number — the shareable sentence */
+.inflation-cpi {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed #c9c4b4;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  color: #2a2826;
+  line-height: 1.55;
+}
+.inflation-cpi strong { font-weight: 800; }
+.inflation-cpi .is-up   { color: var(--err); }
+.inflation-cpi .is-down { color: var(--ok); }
+.inflation-cpi-foot {
+  margin-top: 4px;
+  font-size: 10px;
+  color: #8a8480;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+/* Basket summary — two big dollar numbers with a delta below */
+.basket-summary {
+  margin: 14px 0 18px;
+  padding: 14px 12px 12px;
+  border: 1px dashed #b5b0a1;
+  border-radius: 6px;
+  background: rgba(10, 94, 68, 0.04);
+  text-align: center;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.basket-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5a5751;
+  margin-bottom: 8px;
+}
+.basket-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 6px;
+}
+.basket-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.basket-num {
+  font-size: clamp(20px, 5vw, 28px);
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.basket-when {
+  font-size: 10px;
+  color: #6b6657;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+.basket-arrow {
+  font-size: 22px;
+  font-weight: 700;
+  color: #8a8480;
+}
+.basket-delta {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.basket-delta.is-up   { color: var(--err); }
+.basket-delta.is-down { color: var(--ok); }
+
+/* Range chips reuse existing .filter-chips / .chip styles — no extra CSS needed */
+
+.entry-secondary {
+  margin-top: 12px;
+  text-align: center;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+.link-danger { color: var(--err); }
+.link-danger:hover { color: var(--err); }
+
+/* Destructive action inside a modal — clearly separated from Cancel so users
+   can't tap it by mistake. Dashed red border + full width signals "danger". */
+.modal-danger {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed #d4cfbe;
+}
+.btn-danger {
+  width: 100%;
+  padding: 11px 16px;
+  background: transparent;
+  border: 1.5px dashed var(--err);
+  border-radius: 6px;
+  color: var(--err);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn-danger:hover {
+  background: var(--err);
+  color: #fefdf5;
+  border-style: solid;
+}
+.btn-danger:active { transform: translateY(1px); }
+
+/* Solid danger button variant — for the confirm dialog where we want a strong
+   primary action rather than a tentative dashed-bordered link. */
+.btn-danger-solid {
+  width: 100%;
+  padding: 14px;
+  background: var(--err);
+  color: #fefdf5;
+  border: 2px solid var(--err);
+  border-radius: 8px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.12s ease;
+}
+.btn-danger-solid:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btn-danger-solid:active { transform: translateY(0); }
+
+/* Custom confirm/alert dialog — sits ABOVE other modals (z-index 2000) and
+   is sized smaller so it reads as a focused decision prompt. */
+.dialog-overlay { z-index: 2000; }
+.dialog-card { max-width: 380px; }
+.dialog-message {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #2a2826;
+  margin: 0 0 18px;
+  text-align: center;
+}
+
+/* JS-disabled fallback. The <noscript> tag injects styles that hide the app
+   shell and renders this card-style takeover instead — receipt aesthetic so
+   it doesn't feel like a generic error page. */
+.noscript-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 9999;
+}
+.noscript-card {
+  position: relative;
+  max-width: 480px;
+  width: 100%;
+  padding: 36px 28px 32px;
+  background-color: #fefdf5;
+  background-image: var(--paper-watermark);
+  background-repeat: repeat;
+  border: 1px solid #d4cfbe;
+  border-radius: 12px;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.noscript-card::before,
+.noscript-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 8px;
+  pointer-events: none;
+  background:
+    linear-gradient(45deg,  #fefdf5 25%, transparent 25.5%) 0 0 / 10px 10px repeat-x,
+    linear-gradient(-45deg, #fefdf5 25%, transparent 25.5%) 0 0 / 10px 10px repeat-x;
+}
+.noscript-card::before { top: -8px; }
+.noscript-card::after  { bottom: -8px; transform: scaleY(-1); }
+
+.noscript-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: var(--err);
+  margin-bottom: 12px;
+}
+.noscript-brand {
+  font-size: clamp(28px, 6vw, 36px);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed #c9c4b4;
+}
+.noscript-brand .dot { color: var(--brand); }
+.noscript-body {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #2a2826;
+  margin: 0 0 12px;
+  text-align: left;
+}
+.noscript-body-muted { color: #5a5751; }
+.noscript-promise {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px dashed #c9c4b4;
+  font-size: 11.5px;
+  font-style: italic;
+  color: #6b6657;
+  letter-spacing: 0.04em;
+}
+
+/* Paper watermark — diagonal "PRICEPRINT · ARTIVICOLAB" text baked into the
+   receipt paper background, like a real watermarked draft. Applied via the
+   --paper-watermark custom property below, so .entry and .receipt rules can
+   reference it inside their background shorthand without losing the image. */
+:root {
+  --paper-watermark: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='560' height='540'><g fill='%230a5e44' fill-opacity='0.035' font-family='ui-monospace, monospace' font-size='22' font-weight='800' letter-spacing='4' transform='rotate(-22 280 270)'><text x='-200' y='90'>PRICEPRINT.ARTIVICOLAB.COM</text><text x='-200' y='220'>PRICEPRINT.ARTIVICOLAB.COM</text><text x='-200' y='350'>PRICEPRINT.ARTIVICOLAB.COM</text><text x='-200' y='480'>PRICEPRINT.ARTIVICOLAB.COM</text><text x='-200' y='610'>PRICEPRINT.ARTIVICOLAB.COM</text></g></svg>");
+}
+
+/* Shopping list screen */
+.shop-add {
+  margin: 8px 0 14px;
+}
+.shop-add .combo {
+  position: relative;
+}
+.shop-add input {
+  width: 100%;
+  padding: 12px 12px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 15px;
+  border: 0;
+  border-bottom: 1px dashed #b5b0a1;
+  background: transparent;
+  color: var(--ink);
+}
+.shop-add input::placeholder { color: #b0aa9c; font-style: italic; }
+.shop-add input:focus { outline: none; border-bottom: 1px solid var(--brand); }
+
+.shop-list { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.shop-row {
+  padding: 12px 4px;
+  border-bottom: 1px dotted #c9c4b4;
+  transition: opacity 0.15s ease;
+}
+.shop-row.is-purchased {
+  opacity: 0.55;
+}
+.shop-row.is-purchased .data-name {
+  text-decoration: line-through;
+  text-decoration-color: #8a8480;
+  text-decoration-thickness: 1.5px;
+}
+.shop-check-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+}
+.shop-check {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--brand);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.shop-purchased-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  color: #6b6657;
+  font-style: italic;
+  padding: 6px 0 0;
+}
+
+/* Inline price-log form — appears under a checked-off row so the user can
+   log the actual paid price without leaving the shopping list. */
+.shop-log-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(10, 94, 68, 0.07);
+  border: 1px dashed var(--brand);
+  border-radius: 4px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: #2a2826;
+}
+.shop-log-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.shop-log-input-wrap {
+  display: inline-flex;
+  align-items: center;
+  background: #fefdf5;
+  border: 1px solid var(--brand);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+.shop-log-prefix { color: var(--brand); font-weight: 700; margin-right: 2px; }
+.shop-log-form input {
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+  width: 70px;
+  padding: 2px 0;
+  outline: none;
+}
+.shop-log-save {
+  background: var(--brand);
+  color: #fefdf5;
+  border: 0;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+.shop-log-save:hover { filter: brightness(1.08); }
+
+.shop-logged-note {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  color: var(--ok);
+  font-weight: 700;
+}
+
+/* Store-grouped breakdown — each store with its items listed underneath */
+.shop-stores {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.shop-store-group {
+  padding: 10px 12px;
+  border: 1px dashed #b5b0a1;
+  border-radius: 4px;
+  background: #fefdf5;
+}
+.shop-store-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px dashed #c9c4b4;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.shop-store-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+}
+.shop-store-stats {
+  font-size: 11.5px;
+  color: #5a5751;
+}
+.shop-store-stats strong { color: var(--brand); }
+.shop-store-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.shop-store-items li {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 2px;
+  font-size: 12.5px;
+  color: #3a3835;
+}
+.shop-store-item-name { font-weight: 600; }
+.shop-store-item-price { color: var(--brand); font-weight: 700; }
+.shop-empty { padding: 18px 8px; }
+
+.shop-remove {
+  background: transparent;
+  border: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: #b5b0a1;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.shop-remove:hover { background: rgba(185, 28, 28, 0.10); color: var(--err); }
+
+.shop-qty-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+}
+.shop-qty-btn {
+  width: 22px;
+  height: 22px;
+  border: 1px dashed #b5b0a1;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--brand);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.shop-qty-btn:hover { background: var(--brand); color: #fefdf5; border-color: var(--brand); }
+.shop-qty {
+  display: inline-block;
+  min-width: 18px;
+  text-align: center;
+  font-weight: 800;
+  color: var(--ink);
+}
+.shop-qty-size { color: #8a8480; font-size: 11px; }
+.shop-store strong { color: var(--brand); }
+.shop-meta-empty { color: #b5b0a1; font-style: italic; font-size: 11.5px; }
+
+.shop-add-new {
+  font-style: italic;
+  color: var(--brand);
+  font-weight: 700;
+}
+
+/* Grand total row */
+.shop-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 14px;
+  padding: 12px 0 6px;
+  border-top: 2px solid #1a1a1a;
+  border-bottom: 1px dashed #c9c4b4;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.shop-total-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+.shop-total-amount {
+  font-size: clamp(20px, 5vw, 28px);
+  font-weight: 800;
+  color: var(--brand);
+}
+
+.nudge {
+  text-align: center;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  font-style: italic;
+  color: #5a5751;
+  max-width: 42ch;
+  margin: 32px auto 0;
+  padding: 0 16px;
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- forms ---------- */
+
+.entry, .placeholder {
+  background-color: #fefdf5;
+  background-image: var(--paper-watermark);
+  background-repeat: repeat;
+  border: 1px solid #d4cfbe;
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  position: relative;
+}
+/* torn-paper zigzag on top and bottom of every form card, matching the landing receipt */
+.entry::before,
+.entry::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 8px;
+  pointer-events: none;
+  background:
+    linear-gradient(45deg,  #fefdf5 25%, transparent 25.5%) 0 0 / 10px 10px repeat-x,
+    linear-gradient(-45deg, #fefdf5 25%, transparent 25.5%) 0 0 / 10px 10px repeat-x;
+}
+.entry::before { top: -8px; }
+.entry::after  { bottom: -8px; transform: scaleY(-1); }
+
+.screen-title {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 4px 0 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #c9c4b4;
+}
+
+.field {
+  display: block;
+  margin-bottom: 12px;
+}
+.field .lbl {
+  display: block;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: #5a5751;
+  margin-bottom: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.field input[type="text"],
+.field input[type="number"],
+.field input[type="date"],
+.field input[type="datetime-local"],
+.field select {
+  width: 100%;
+  padding: 12px 10px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 16px;
+  border: 0;
+  border-bottom: 1px dashed #b5b0a1;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.15s ease;
+}
+/* dropdown affordance — chevron on right edge of <select> */
+.field select {
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%230a5e44' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  cursor: pointer;
+}
+/* kill number-input spinner arrows — one-thumb operation in the aisle */
+.field input[type="number"]::-webkit-inner-spin-button,
+.field input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.field input[type="number"] { -moz-appearance: textfield; }
+
+/* datetime-local: WebKit centers the value text by default — left-align it to
+   match the sibling inputs in the same .row.two grid. */
+.field input[type="datetime-local"],
+.field input[type="date"] {
+  text-align: left;
+}
+.field input[type="datetime-local"]::-webkit-date-and-time-value,
+.field input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+.field input[type="datetime-local"]::-webkit-datetime-edit,
+.field input[type="date"]::-webkit-datetime-edit {
+  padding: 0;
+}
+.field input::placeholder { color: #b0aa9c; font-style: italic; }
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-bottom: 1px solid var(--brand);
+  border-bottom-style: solid;
+}
+.field.inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--ink);
+}
+.field.inline input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--brand);
+}
+
+.row.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.combo { position: relative; z-index: 1; }
+.suggest {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  background: #fefdf5;
+  border: 1px dashed #a8a294;
+  border-radius: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  max-height: min(260px, 50vh);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.combo:focus-within { z-index: 50; }
+.suggest li {
+  padding: 10px 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  border-bottom: 1px dotted #d4cfbe;
+}
+.suggest li:last-child { border-bottom: 0; }
+.suggest li:hover { background: rgba(10, 94, 68, 0.08); color: var(--brand); }
+.suggest .cat {
+  font-size: 10px;
+  color: #8a8480;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+/* ---------- preview / hints ---------- */
+
+.preview {
+  margin: 12px 0;
+  padding: 12px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 8px;
+  color: var(--ok);
+  font-size: 18px;
+}
+.preview strong { font-weight: 700; }
+.preview .muted { color: var(--muted); font-size: 13px; font-weight: 400; }
+
+.hint {
+  margin: 8px 0 12px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  white-space: pre-line;
+}
+
+/* Price-while-typing alerts — fires when item+store+size+price are all set
+   and the typed price compares unfavorably/favorably with history. */
+.price-alerts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+.price-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1.5px solid;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.5;
+  animation: price-alert-in 0.25s ease;
+}
+.price-alert-icon {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.price-alert-text strong { font-weight: 800; }
+.price-alert-up    { background: rgba(185, 28, 28, 0.08); border-color: var(--err);    color: #6b1717; }
+.price-alert-up    .price-alert-icon { color: var(--err); }
+.price-alert-down  { background: rgba(21, 128, 61, 0.08); border-color: var(--ok);    color: #0e4d24; }
+.price-alert-down  .price-alert-icon { color: var(--ok); }
+.price-alert-cross { background: rgba(217, 119, 6, 0.08); border-color: var(--accent); color: #6b3a04; }
+.price-alert-cross .price-alert-icon { color: var(--accent); }
+.price-alert-win   { background: rgba(10, 94, 68, 0.10);  border-color: var(--brand);  color: var(--brand); }
+.price-alert-win   .price-alert-icon { color: var(--brand); }
+@keyframes price-alert-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Day-of-week pattern box on the Sale check tab + inline insight on item detail */
+.pattern-box {
+  margin: 14px 0 18px;
+  padding: 14px 14px 12px;
+  border: 1px dashed var(--brand);
+  border-radius: 6px;
+  background: rgba(10, 94, 68, 0.06);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  text-align: center;
+}
+.pattern-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--brand);
+  text-transform: uppercase;
+}
+.pattern-headline {
+  font-size: clamp(22px, 5vw, 30px);
+  font-weight: 800;
+  color: var(--ink);
+  margin: 4px 0 6px;
+  letter-spacing: -0.005em;
+}
+.pattern-sub {
+  font-size: 11.5px;
+  color: #5a5751;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+.pattern-stores {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(10, 94, 68, 0.3);
+  text-align: left;
+}
+.pattern-stores-label {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b6657;
+  margin-bottom: 6px;
+}
+.pattern-store-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12.5px;
+  border-bottom: 1px dotted #c9c4b4;
+}
+.pattern-store-row:last-child { border-bottom: 0; }
+.pattern-store-name { font-weight: 700; color: var(--ink); }
+.pattern-store-day  { font-weight: 800; color: var(--brand); }
+.pattern-store-count { font-size: 10.5px; color: #8a8480; }
+.pattern-inline {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  color: #2a2826;
+  margin: 4px 0 12px;
+  padding: 8px 10px;
+  background: rgba(10, 94, 68, 0.07);
+  border-left: 3px solid var(--brand);
+  border-radius: 3px;
+  line-height: 1.5;
+  text-align: left;
+}
+.pattern-inline strong { color: var(--brand); font-weight: 800; }
+
+/* Sale check screen — headline summary above the patterns box */
+.sale-summary {
+  margin: 10px 0 14px;
+  padding: 12px 14px;
+  background: rgba(185, 28, 28, 0.06);
+  border-left: 3px solid var(--err);
+  border-radius: 3px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #2a2826;
+}
+.sale-summary strong { color: var(--err); font-weight: 800; }
+.sale-summary em { font-style: italic; font-weight: 700; }
+
+/* Filter chips — receipt-style toggle for All / Real / Fake */
+.filter-chips {
+  display: flex;
+  gap: 6px;
+  margin: 0 0 14px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.chip {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px dashed #b5b0a1;
+  border-radius: 4px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #5a5751;
+  cursor: pointer;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+.chip:hover { color: var(--ink); border-color: #8a8480; }
+.chip.is-active {
+  background: var(--brand);
+  border-color: var(--brand);
+  border-style: solid;
+  color: #fefdf5;
+}
+.chip-count {
+  font-size: 10.5px;
+  font-weight: 800;
+  opacity: 0.7;
+}
+.chip.is-active .chip-count { opacity: 1; }
+
+/* Sale Check rows — extra vertical padding so each item reads as a complete
+   thought when cropped for sharing. Bolds the historical-avg number too. */
+.entry .data-row { padding: 14px 4px; } /* baseline */
+.sale-evidence-label strong {
+  font-weight: 800;
+  color: var(--ink);
+}
+
+/* ---------- buttons ---------- */
+
+.actions {
+  margin-top: 16px;
+}
+button.primary {
+  width: 100%;
+  background: #1a1a1a;
+  color: #fefdf5;
+  border: 2px dashed #1a1a1a;
+  border-radius: 8px;
+  padding: 14px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  animation: r-cta-breathe 2.4s ease-in-out infinite;
+}
+button.primary:hover {
+  background: var(--brand);
+  border-color: var(--brand);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(10, 94, 68, 0.35);
+  animation: none;
+}
+button.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(10, 94, 68, 0.25);
+}
+button.primary:disabled { opacity: 0.5; cursor: not-allowed; animation: none; }
+button.primary:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  button.primary { animation: none; }
+}
+
+.status {
+  margin: 12px 0 0;
+  font-size: 14px;
+  min-height: 20px;
+}
+.status.ok { color: var(--ok); }
+.status.err { color: var(--err); }
+
+/* ---------- footer ---------- */
+
+footer {
+  text-align: center;
+  padding: 28px 16px 48px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: #6b6657;
+  letter-spacing: 0.06em;
+}
+.footer-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.footer-actions .sep { color: #b5b0a1; }
+.link-btn {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--brand);
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: inherit;
+}
+.link-btn:hover { text-decoration: underline; }
+
+/* ---------- landing page: the receipt ---------- */
+
+.counter { min-height: 100vh; }
+
+/* mobile-first: pitch stacks above the receipt */
+.stage { display: block; }
+.pitch { display: block; }
+@media (max-width: 879px) {
+  .pitch {
+    padding: 24px 20px 8px;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 880px) {
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 460px;
+    gap: 56px;
+    align-items: start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 40px 64px;
+  }
+  .stage .receipt { margin: 0; }
+  .pitch {
+    display: block;
+    position: sticky;
+    top: 24px;
+    color: #2a2826;
+    padding-top: 0;
+  }
+}
+
+@media (min-width: 1180px) {
+  .stage {
+    grid-template-columns: minmax(0, 1fr) 500px;
+    gap: 80px;
+    padding: 32px 56px 80px;
+  }
+}
+
+.pitch-headline {
+  font-size: clamp(40px, 5.5vw, 68px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+  margin: 0 0 24px;
+  color: #1a1a1a;
+}
+.pitch-headline em {
+  font-style: italic;
+  color: var(--brand);
+  font-weight: 800;
+}
+.pitch-audience {
+  font-size: clamp(15px, 1.3vw, 17px);
+  font-style: italic;
+  color: #2a2826;
+  margin: 0 0 28px;
+  padding-left: 14px;
+  border-left: 3px solid var(--brand);
+  line-height: 1.4;
+  max-width: 42ch;
+}
+
+.pitch-lede {
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.55;
+  color: #3a3835;
+  margin: 0 0 28px;
+  max-width: 48ch;
+}
+.pitch-lede em { font-style: italic; color: var(--brand); font-weight: 600; }
+.pitch-lede strong { font-weight: 700; color: #1a1a1a; }
+
+.pitch-points {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px;
+  border-top: 1px dashed #b5b0a1;
+}
+.pitch-points li {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px dashed #b5b0a1;
+  color: #2a2826;
+}
+.pitch-points li span {
+  color: var(--brand);
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+.receipt {
+  position: relative;
+  margin: 8px 10px;
+  max-width: 560px;
+  padding: 28px 20px 24px;
+  background-color: #fefdf5;
+  background-image: var(--paper-watermark);
+  background-repeat: repeat;
+  color: #1a1a1a;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Courier New", monospace;
+  font-size: 13.5px;
+  line-height: 1.55;
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.12),
+    0 2px 6px rgba(0,0,0,.06);
+}
+
+@media (min-width: 580px) {
+  .receipt {
+    margin: 20px auto;
+    padding: 40px 32px 32px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+}
+
+/* torn-paper zigzag on top and bottom edges */
+.receipt::before,
+.receipt::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background:
+    linear-gradient(45deg,  #fefdf5 25%, transparent 25.5%) 0 0 / 12px 12px repeat-x,
+    linear-gradient(-45deg, #fefdf5 25%, transparent 25.5%) 0 0 / 12px 12px repeat-x;
+}
+.receipt::before { top: -10px; }
+.receipt::after  { bottom: -10px; transform: scaleY(-1); }
+
+.r-header { text-align: center; margin-bottom: 14px; }
+.r-store {
+  font-size: clamp(22px, 5vw, 30px);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+.r-tag {
+  font-size: 10.5px;
+  color: #555;
+  letter-spacing: 0.08em;
+}
+
+.r-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #555;
+  margin: 10px 0;
+}
+
+.r-rule {
+  height: 0;
+  border-top: 1px dashed #999;
+  margin: 12px 0;
+}
+.r-rule.double {
+  border-top: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+  height: 3px;
+}
+
+.r-section {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 14px 0 8px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.r-item {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin: 5px 0;
+}
+.r-item .name { flex: 0 1 auto; }
+.r-item .dots {
+  flex: 1 1 auto;
+  border-bottom: 1px dotted #aaa;
+  height: 9px;
+  margin: 0 6px;
+}
+.r-item .price {
+  flex: 0 0 auto;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.r-item.r-total {
+  font-size: clamp(16px, 3.4vw, 20px);
+  font-weight: 800;
+  margin: 8px 0;
+}
+.r-item.r-total .price { color: var(--brand); }
+
+.r-savings {
+  text-align: center;
+  margin: 18px 0 14px;
+}
+
+/* carousel — pure-CSS cross-fade through 4 verbatim figures. 6s per slide. */
+.r-carousel {
+  position: relative;
+  min-height: 150px;
+}
+.r-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: r-cycle 24s infinite;
+}
+.r-slide-1 { animation-delay: 0s; }
+.r-slide-2 { animation-delay: 6s; }
+.r-slide-3 { animation-delay: 12s; }
+.r-slide-4 { animation-delay: 18s; }
+
+@keyframes r-cycle {
+  0%, 25%, 100% { opacity: 0; }
+  2%, 23%      { opacity: 1; }
+}
+
+/* reduced-motion: show only the first slide, kill animations */
+@media (prefers-reduced-motion: reduce) {
+  .r-slide { animation: none; opacity: 0; position: static; display: none; }
+  .r-slide-1 { opacity: 1; display: block; }
+  .r-carousel { min-height: 0; }
+}
+.r-savings-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+.r-savings-amount {
+  font-size: clamp(30px, 9vw, 48px);
+  font-weight: 800;
+  color: var(--brand);
+  margin: 6px 0;
+  letter-spacing: -0.01em;
+}
+.r-savings-note {
+  font-size: 11px;
+  color: #777;
+  font-style: italic;
+}
+.r-savings-cite {
+  font-size: 10px;
+  color: #8a8780;
+  margin-top: 4px;
+  letter-spacing: 0.02em;
+}
+.r-savings-cite a {
+  color: #6b6657;
+  text-decoration: underline;
+  text-decoration-color: #b5b0a1;
+  text-underline-offset: 2px;
+}
+.r-savings-cite a:hover { color: var(--brand); text-decoration-color: var(--brand); }
+
+.r-trust {
+  text-align: center;
+  margin: 14px 0 14px;
+  line-height: 1.55;
+}
+.r-trust-strong {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: 0.02em;
+}
+.r-trust-sub {
+  font-size: 11.5px;
+  color: #5a5751;
+  margin-top: 2px;
+}
+
+.r-cta-wrap { text-align: center; margin: 6px 0 8px; }
+.r-cta {
+  display: inline-block;
+  background: #1a1a1a;
+  color: #fefdf5;
+  padding: clamp(14px, 2vw, 18px) clamp(22px, 3vw, 32px);
+  font-family: inherit;
+  font-size: clamp(13px, 1.6vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border: 2px dashed #1a1a1a;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  animation: r-cta-breathe 2.4s ease-in-out infinite;
+  position: relative;
+}
+.r-cta::after {
+  content: " →";
+  display: inline-block;
+  margin-left: 4px;
+  transition: transform 0.18s ease;
+}
+.r-cta:hover {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(10, 94, 68, 0.35);
+  animation: none;
+}
+.r-cta:hover::after { transform: translateX(4px); }
+.r-cta:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(10, 94, 68, 0.25);
+}
+.r-cta:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+}
+
+@keyframes r-cta-breathe {
+  0%, 100% { box-shadow: 0 2px 0 rgba(0,0,0,0.0), 0 0 0 0 rgba(10, 94, 68, 0.25); }
+  50%      { box-shadow: 0 4px 12px rgba(0,0,0,0.18), 0 0 0 4px rgba(10, 94, 68, 0.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .r-cta { animation: none; }
+}
+
+.r-list {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 14px;
+}
+.r-list li {
+  position: relative;
+  padding-left: 18px;
+  margin: 8px 0;
+  font-size: 12.5px;
+}
+.r-list li::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--brand);
+  font-weight: 700;
+}
+.r-list.ord {
+  counter-reset: step;
+}
+.r-list.ord li::before {
+  counter-increment: step;
+  content: counter(step, decimal-leading-zero);
+  font-size: 11px;
+  color: var(--brand);
+}
+.r-list strong { font-weight: 700; }
+
+.r-fineprint {
+  font-size: 11px;
+  color: #555;
+  line-height: 1.6;
+  margin: 12px 0;
+  text-align: justify;
+}
+.r-fineprint em { font-style: italic; color: var(--brand); }
+
+.r-thanks {
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 14px 0 4px;
+  font-size: 13px;
+}
+.r-thanks-sub {
+  text-align: center;
+  font-size: 11px;
+  color: #777;
+  font-style: italic;
+  margin-bottom: 14px;
+}
+
+.r-barcode {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1px;
+  height: clamp(48px, 8vw, 64px);
+  margin: 16px 0 6px;
+}
+.r-barcode span {
+  display: block;
+  background: #1a1a1a;
+}
+.r-barcode-num {
+  text-align: center;
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  color: #555;
+}
+
+.r-footer {
+  text-align: center;
+  padding: 8px 16px 32px;
+  font-size: 11px;
+  color: #5a5751;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  letter-spacing: 0.04em;
+}
+.r-footer a {
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(10, 94, 68, 0.45);
+}
+.r-footer a:hover { border-bottom-style: solid; }
+.r-footer-sep { margin: 0 8px; color: #b5b0a1; }
+
+/* "Made by Artivicolab" block on the landing page — sits above the footer,
+   gives the parent studio a real surface (not just a footer line) and a
+   visible contact path. Same paper aesthetic as the rest of the page. */
+.made-by {
+  max-width: 720px;
+  margin: 48px auto 16px;
+  padding: 28px 24px;
+  background: rgba(254, 253, 245, 0.6);
+  border: 1px dashed #c9c4b4;
+  border-radius: 4px;
+  text-align: center;
+  font-family: var(--font);
+}
+.made-by-eyebrow {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin: 0 0 12px;
+}
+.made-by-line {
+  font-size: 17px;
+  color: #2a2826;
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+.made-by-line strong { font-weight: 800; color: #1a1a1a; }
+.made-by-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+}
+.made-by-actions a {
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 8px 14px;
+  border: 1px dashed var(--brand);
+  border-radius: 3px;
+  transition: background 0.15s ease;
+}
+.made-by-actions a:hover { background: rgba(10, 94, 68, 0.08); }
+@media (max-width: 640px) {
+  .made-by { margin: 32px 12px 16px; padding: 22px 16px; }
+}
+
+/* ---------- below-fold container: holds proof + tabs-tour ---------- */
+/* Reset away from .stage's 2-column grid so these sections flow normally
+   at full width below the receipt. */
+.below-fold {
+  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+/* Override the global `main` max-width so below-fold can breathe wider */
+main.below-fold { max-width: 1200px; padding: 0 24px 64px; }
+
+/* ---------- proof section: actual app screens on the landing ---------- */
+
+.proof {
+  max-width: 960px;
+  margin: 48px auto 0;
+  padding: 0 20px 32px;
+}
+.proof-section-title {
+  font-size: clamp(28px, 4.5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: #1a1a1a;
+  text-align: center;
+  margin: 0 0 12px;
+}
+.proof-section-lede {
+  font-family: var(--font);
+  font-size: clamp(16px, 1.4vw, 18px);
+  color: #3a3835;
+  text-align: center;
+  max-width: 540px;
+  margin: 0 auto 40px;
+  line-height: 1.55;
+}
+
+/* "Receipts on a board" layout — each card is a receipt at its own slight
+   tilt, with the copy beside it as a typed note with a piece of tape at the
+   top. Per-card --tilt and --note-tilt vars below give each card its own
+   lean, so no two adjacent cards repeat the same angle or position. The
+   directional variants (reverse, stacked, compact) still set which SIDE the
+   note sits on; tilts layer on top of those choices. */
+.proof-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 56px 64px;
+  max-width: 960px;
+  margin: 0 auto 96px;
+  padding: 16px 0;
+  --tilt: -1.2deg;
+  --note-tilt: 1.4deg;
+}
+.proof-card .proof-frame { flex: 0 0 auto; }
+.proof-card .proof-copy  { flex: 1 1 320px; max-width: 420px; min-width: 0; padding-top: 4px; }
+
+/* Reverse — note on the LEFT of the receipt. */
+.proof-card-reverse { flex-direction: row-reverse; }
+
+/* Stacked — note above, receipt below, both centered. */
+.proof-card-stacked {
+  flex-direction: column;
+  gap: 36px;
+  text-align: center;
+}
+.proof-card-stacked .proof-copy  { max-width: 620px; padding-top: 0; }
+.proof-card-stacked .proof-frame { max-width: 460px; }
+.proof-card-stacked .proof-demo-hint-stacked {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* Compact — note above on mobile, side-by-side on wide. Used for the
+   Log a Price form whose internal 2-column labels need ~440 px to breathe. */
+.proof-card-compact {
+  flex-direction: column;
+  gap: 28px;
+  text-align: center;
+  max-width: 560px;
+}
+.proof-card-compact .proof-copy  { padding-top: 0; }
+.proof-card-compact .proof-frame { max-width: 360px; }
+.proof-card-compact .proof-demo-hint-stacked {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  text-align: left;
+}
+@media (min-width: 880px) {
+  .proof-card-compact {
+    flex-direction: row-reverse;
+    max-width: 960px;
+    text-align: left;
+    gap: 56px;
+    align-items: center;
+  }
+  .proof-card-compact .proof-copy  { max-width: 460px; }
+  .proof-card-compact .proof-frame { max-width: 440px; }
+  .proof-card-compact .proof-demo-hint-stacked {
+    flex-basis: 100%;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: 0;
+    text-align: left;
+  }
+}
+
+.proof-card:last-of-type { margin-bottom: 24px; }
+
+/* Mobile / cramped: stack everything, kill tilts so it doesn't feel chaotic
+   on a small viewport. */
+@media (max-width: 640px) {
+  .proof-card { flex-direction: column; gap: 28px; margin-bottom: 64px; }
+  .proof-card-reverse { flex-direction: column; }
+  .proof-card { --tilt: 0deg; --note-tilt: 0deg; }
+}
+
+/* Per-card tilt assignments. Alternating signs so adjacent receipts lean
+   AWAY from each other instead of all leaning the same way (the latter
+   reads as "broken alignment" rather than "intentionally tactile"). */
+.proof-card:nth-of-type(1) { --tilt: -1.4deg; --note-tilt:  1.2deg; }
+.proof-card:nth-of-type(2) { --tilt:  1.2deg; --note-tilt: -1.6deg; }
+.proof-card:nth-of-type(3) { --tilt: -0.8deg; --note-tilt:  1.8deg; }
+.proof-card:nth-of-type(4) { --tilt:  1.6deg; --note-tilt: -1.0deg; }
+.proof-card:nth-of-type(5) { --tilt: -1.8deg; --note-tilt:  1.4deg; }
+.proof-card:nth-of-type(6) { --tilt:  1.0deg; --note-tilt: -1.8deg; }
+.proof-card:nth-of-type(7) { --tilt: -1.2deg; --note-tilt:  1.6deg; }
+
+/* Apply the tilts. The frame already has its receipt paper + zigzag edges;
+   rotating the wrapper rotates those too. The note rotation is opposite so
+   they don't look parallel. */
+.proof-card .proof-frame { transform: rotate(var(--tilt)); transition: transform 0.35s ease; }
+.proof-card .proof-frame:hover { transform: rotate(0); }
+
+/* Copy becomes a typed note on warm paper, dashed border, with a strip of
+   masking tape at the top. The tape is intentionally crooked. */
+.proof-card .proof-copy {
+  position: relative;
+  background: #fbf7e8;
+  border: 1px dashed #c9c4b4;
+  border-radius: 3px;
+  padding: 24px 22px 18px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 6px 14px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.04);
+  transform: rotate(var(--note-tilt));
+  transition: transform 0.35s ease;
+}
+.proof-card .proof-copy:hover { transform: rotate(0); }
+.proof-card .proof-copy::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 78px;
+  height: 20px;
+  background: linear-gradient(180deg, rgba(220, 215, 195, 0.55), rgba(200, 195, 175, 0.45));
+  border-left: 1px solid rgba(0, 0, 0, 0.04);
+  border-right: 1px solid rgba(0, 0, 0, 0.04);
+  transform: translateX(-50%) rotate(-4deg);
+  pointer-events: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+/* Vary the tape position/angle per card so no two pieces look identical. */
+.proof-card:nth-of-type(2) .proof-copy::before { left: 28%; transform: translateX(-50%) rotate(7deg); width: 64px; }
+.proof-card:nth-of-type(3) .proof-copy::before { left: 72%; transform: translateX(-50%) rotate(-9deg); width: 88px; }
+.proof-card:nth-of-type(4) .proof-copy::before { left: 40%; transform: translateX(-50%) rotate(5deg); }
+.proof-card:nth-of-type(5) .proof-copy::before { left: 65%; transform: translateX(-50%) rotate(-6deg); width: 70px; }
+.proof-card:nth-of-type(6) .proof-copy::before { left: 35%; transform: translateX(-50%) rotate(8deg); width: 84px; }
+.proof-card:nth-of-type(7) .proof-copy::before { left: 55%; transform: translateX(-50%) rotate(-3deg); width: 92px; }
+
+/* Each demo sits on the same torn receipt paper as the hero card — same
+   watermark, same zigzag edges, same shadow. No drop-shadow SaaS frame. */
+.proof-frame {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  justify-self: center;
+  background-color: #fefdf5;
+  background-image: var(--paper-watermark);
+  background-repeat: repeat;
+  padding: 22px 18px;
+  color: #1a1a1a;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+}
+/* Torn-paper zigzag on top and bottom edges — identical recipe to .receipt */
+.proof-frame::before,
+.proof-frame::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background:
+    linear-gradient(45deg,  #fefdf5 25%, transparent 25.5%) 0 0 / 12px 12px repeat-x,
+    linear-gradient(-45deg, #fefdf5 25%, transparent 25.5%) 0 0 / 12px 12px repeat-x;
+}
+.proof-frame::before { top: -10px; }
+.proof-frame::after  { bottom: -10px; transform: scaleY(-1); }
+
+.proof-screen {
+  background: transparent;
+  padding: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: #1a1a1a;
+  line-height: 1.5;
+  position: relative;
+  max-height: 520px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+/* The real Compare hero CSS uses vw-based clamps (e.g. clamp(32px, 7vw, 48px))
+   sized for a 360-414px mobile viewport, where the screen IS the viewport.
+   Inside this embedded demo on a wide desktop, vw is huge so the clamps pick
+   their MAX values and the CHEAPEST badge / Costco text overflow the ~344px
+   demo frame. These scoped overrides re-tune the same CSS to container-sized
+   values. Specificity beats the bare .compare-hero-* clamps. */
+.proof-screen .compare-hero-box       { padding: 14px 12px 24px; margin: 2px 0 12px; }
+.proof-screen .compare-hero-upper     { gap: 6px; margin: 2px 0 6px; }
+.proof-screen .compare-hero-name      { font-size: 28px; margin: 4px 0 8px; }
+.proof-screen .compare-hero-badge     { width: 78px; margin-right: 0; }
+.proof-screen .compare-hero-scoreboard { gap: 4px; padding: 8px 0; }
+.proof-screen .compare-hero-stat-num  { font-size: 18px; }
+.proof-screen .compare-hero-stat-label { font-size: 8.5px; letter-spacing: 0.08em; }
+.proof-screen .compare-hero-sub       { font-size: 10.5px; }
+.proof-screen .compare-hero-actions   { margin-top: 10px; }
+.proof-screen .compare-hero-actions .primary {
+  min-width: 0;
+  width: 100%;
+  padding: 9px 14px;
+  font-size: 13px;
+}
+.proof-screen .compare-hero-mark      { font-size: 8px; bottom: 4px; right: 8px; }
+/* Inflation screen — basket-summary row holds two 5-figure prices joined by
+   an arrow. The full-app .basket-num uses clamp(20px, 5vw, 28px), which at a
+   wide viewport clamps to 28px and overflows the 460-px embedded frame.
+   Re-tune to container-appropriate sizes; same approach as the hero overrides. */
+.proof-screen .basket-summary { padding: 10px 8px 8px; margin: 10px 0 12px; }
+.proof-screen .basket-row     { gap: 8px; }
+.proof-screen .basket-num     { font-size: 18px; letter-spacing: -0.02em; }
+.proof-screen .basket-arrow   { font-size: 14px; }
+.proof-screen .basket-when    { font-size: 9px; }
+.proof-screen .basket-delta   { font-size: 12px; }
+.proof-screen .basket-label   { font-size: 9.5px; margin-bottom: 6px; }
+/* Defense in depth: even at the new 400-px frame, a couple of full-app
+   components have row layouts that go ugly if their parent narrows below
+   mobile width. Pin a minimum content width so we never collapse below the
+   designed range, and let the screen scroll horizontally only if absolutely
+   forced to (won't be, in practice). */
+.proof-screen > * {
+  min-width: 0;
+}
+/* When the real app mounts, its first-child is the screen content. Scope
+   tighter spacing here so we don't fight the global rules. */
+.proof-screen > * {
+  margin-top: 0;
+}
+.proof-screen .screen-title,
+.proof-screen .entry h2 {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+.proof-demo-loading,
+.proof-demo-fallback {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a8480;
+  padding: 40px 0;
+}
+.proof-demo-hint {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px dashed #b5b0a1;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  color: #2a2826;
+  line-height: 1.5;
+}
+.proof-demo-hint em { color: var(--brand); font-style: italic; font-weight: 600; }
+.proof-title {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #c9c4b4;
+  margin-bottom: 12px;
+}
+.proof-title-item {
+  text-align: left;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.proof-stats-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b6657;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #a8a294;
+  margin-bottom: 10px;
+}
+.proof-summary {
+  background: rgba(185, 28, 28, 0.06);
+  border-left: 3px solid var(--err);
+  padding: 8px 10px;
+  font-size: 11px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.proof-summary strong { color: var(--err); font-weight: 800; }
+.proof-summary em { font-style: italic; font-weight: 700; }
+
+.proof-rows {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.proof-row {
+  padding: 8px 2px;
+  border-bottom: 1px dotted #c9c4b4;
+  display: grid;
+  gap: 3px;
+}
+.proof-row:last-child { border-bottom: 0; }
+.proof-row-rank {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+}
+.proof-row-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.proof-item {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--ink);
+}
+.proof-medal { color: var(--accent); }
+.proof-row-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: #3a3835;
+}
+.proof-up   { color: var(--err); font-weight: 800; font-size: 11px; }
+.proof-down { color: var(--ok);  font-weight: 800; font-size: 11px; }
+.proof-cat  { color: #8a8480; font-size: 10px; }
+
+.proof-tag {
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid;
+}
+.proof-tag.fake { color: var(--err); border-color: var(--err); background: rgba(185, 28, 28, 0.08); }
+.proof-tag.real { color: var(--ok);  border-color: var(--ok);  background: rgba(21, 128, 61, 0.08); }
+.proof-badge-best {
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid var(--ok);
+  color: var(--ok);
+}
+.proof-badge-worst {
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid var(--err);
+  color: var(--err);
+}
+
+/* Compare hero — miniature version */
+.proof-hero-box {
+  position: relative;
+  border: 2px dashed var(--brand);
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(10, 94, 68, 0.10), rgba(10, 94, 68, 0.04));
+  padding: 12px 10px 22px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.proof-hero-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--brand);
+  text-transform: uppercase;
+}
+.proof-hero-name {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 4px 0 10px;
+}
+.proof-hero-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+  padding: 8px 0;
+  border-top: 1px dashed rgba(10, 94, 68, 0.3);
+  border-bottom: 1px dashed rgba(10, 94, 68, 0.3);
+  margin-bottom: 6px;
+}
+.proof-hero-stats > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+.proof-hero-stats strong {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--brand);
+}
+.proof-hero-stats span {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a5751;
+}
+.proof-hero-sub {
+  font-size: 10px;
+  color: #5a5751;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+.proof-hero-mark {
+  position: absolute;
+  bottom: 4px;
+  right: 8px;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(10, 94, 68, 0.55);
+}
+.proof-rankings-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b6657;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #a8a294;
+  margin-bottom: 4px;
+}
+
+/* Item detail mini — insight + chart + store rows */
+.proof-insight {
+  background: rgba(10, 94, 68, 0.07);
+  border-left: 3px solid var(--brand);
+  padding: 8px 10px;
+  font-size: 11px;
+  border-radius: 3px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.proof-insight strong { color: var(--brand); font-weight: 800; }
+.proof-chart {
+  background: rgba(10, 94, 68, 0.04);
+  border: 1px dashed #c9c4b4;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 12px;
+}
+.proof-chart-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a5751;
+  margin-bottom: 4px;
+}
+.proof-trend { font-style: italic; color: #8a8480; }
+.proof-chart-svg {
+  width: 100%;
+  height: 70px;
+  display: block;
+}
+.proof-chart-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9.5px;
+  color: #3a3835;
+  margin-top: 4px;
+}
+.proof-chart-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.proof-chart-dot.dot-min { background: var(--ok); }
+.proof-chart-dot.dot-max { background: var(--err); }
+
+/* Copy side of each proof card — matches the hero's .pitch-* typography
+   so the page reads as one continuous receipt-aesthetic surface. */
+.proof-headline {
+  font-family: var(--font);
+  font-size: clamp(26px, 3.4vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: #1a1a1a;
+  margin: 0 0 18px;
+}
+.proof-headline em { font-style: italic; color: var(--brand); font-weight: 800; }
+.proof-body {
+  font-family: var(--font);
+  font-size: clamp(16px, 1.4vw, 18px);
+  color: #3a3835;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 48ch;
+}
+.proof-body em { font-style: italic; color: var(--brand); font-weight: 600; }
+.proof-body strong { font-weight: 700; color: #1a1a1a; }
+
+.proof-footer-line {
+  text-align: center;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  color: #5a5751;
+  font-style: italic;
+  margin: 40px auto 0;
+  padding: 18px 12px 0;
+  border-top: 1px dashed #b5b0a1;
+  max-width: 560px;
+}
+
+/* ---------- tabs explainer: what's in each tab ---------- */
+
+.tabs-tour {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 8px 20px 32px;
+}
+.tabs-tour-title {
+  font-family: var(--font);
+  font-size: clamp(28px, 4.5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: #1a1a1a;
+  text-align: center;
+  margin: 0 0 12px;
+}
+.tabs-tour-lede {
+  font-family: var(--font);
+  font-size: clamp(16px, 1.4vw, 18px);
+  color: #3a3835;
+  text-align: center;
+  margin: 0 0 36px;
+  line-height: 1.55;
+}
+.tabs-tour-lede em { font-style: italic; color: var(--brand); font-weight: 600; }
+.tabs-tour-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+.tab-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 12px;
+  background: #fefdf5;
+  border: 1px dashed #b5b0a1;
+  border-radius: 6px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+.tab-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand);
+  background: #fffdf3;
+}
+.tab-chip-name {
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.tab-chip-q {
+  font-size: 11.5px;
+  color: #3a3835;
+  line-height: 1.4;
+}
+.tabs-tour-cta {
+  margin-top: 28px;
+  text-align: center;
+}
+@media (max-width: 720px) {
+  .tabs-tour-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 360px) {
+  .tabs-tour-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- per-tab SEO landing blocks ---------- */
+/* Each <screen>.html page renders a .tab-intro above the app shell and a
+   .tab-explainer below it. Both get hidden once the user navigates to a
+   different tab (handled in app.js). Content is real HTML so crawlers can
+   index it; styling stays light so the app shell remains the visual hero. */
+
+.tab-intro {
+  max-width: 760px;
+  margin: 20px auto 8px;
+  padding: 18px 24px 8px;
+  text-align: center;
+}
+.tab-intro-eyebrow {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin: 0 0 10px;
+}
+.tab-intro h1 {
+  font-family: var(--font);
+  font-size: clamp(26px, 3.6vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  color: #1a1a1a;
+  margin: 0 0 12px;
+}
+.tab-intro-lede {
+  font-family: var(--font);
+  font-size: clamp(15px, 1.3vw, 17px);
+  line-height: 1.55;
+  color: #3a3835;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.tab-intro-lede em { color: var(--brand); font-style: italic; font-weight: 600; }
+
+.tab-explainer {
+  max-width: 760px;
+  margin: 32px auto 16px;
+  padding: 24px;
+  background: rgba(254, 253, 245, 0.6);
+  border: 1px dashed #c9c4b4;
+  border-radius: 4px;
+}
+.tab-explainer h2 {
+  font-family: var(--font);
+  font-size: clamp(20px, 2.4vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: #1a1a1a;
+  margin: 0 0 12px;
+}
+.tab-explainer p {
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  color: #2a2826;
+  margin: 0 0 12px;
+}
+.tab-explainer p:last-child { margin-bottom: 0; }
+.tab-explainer em { color: var(--brand); font-style: italic; font-weight: 600; }
+
+.tab-faq {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed #c9c4b4;
+}
+.tab-faq summary {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand);
+  cursor: pointer;
+  list-style: none;
+  padding: 2px 0;
+}
+.tab-faq summary::-webkit-details-marker { display: none; }
+.tab-faq summary::before { content: '+ '; font-weight: 700; }
+.tab-faq[open] summary::before { content: '− '; }
+.tab-faq dl { margin: 14px 0 0; }
+.tab-faq dt {
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 14px 0 4px;
+}
+.tab-faq dt:first-child { margin-top: 4px; }
+.tab-faq dd {
+  margin: 0 0 10px;
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.55;
+  color: #3a3835;
+}
+
+@media (max-width: 640px) {
+  .tab-intro     { padding: 14px 16px 4px; margin-top: 12px; }
+  .tab-explainer { padding: 18px 16px; margin: 24px 12px; }
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M720E2M37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2M720E2M37');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Per-store grocery price breakdown — PricePrint</title>
+<meta name="description" content="See which store wins on produce, dairy, pantry, and more — split by category and ranked from your own price logs. Know where to shop for what.">
+<meta name="theme-color" content="#0f7c5a">
+<link rel="canonical" href="https://priceprint.artivicolab.com/stores.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Per-store grocery price breakdown — PricePrint">
+<meta property="og:description" content="Which store wins on produce, which on dairy, which on pantry. Drawn from your own price logs.">
+<meta property="og:url" content="https://priceprint.artivicolab.com/stores.html">
+<link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-screen="stores">
+<noscript>
+  <style>.topbar, .tabs, main, footer, .watermark, .tab-intro, .tab-explainer { display: none !important; } body { background: transparent !important; }</style>
+  <div class="noscript-screen"><div class="noscript-card"><div class="noscript-title">JAVASCRIPT REQUIRED</div><div class="noscript-brand">Price<span class="dot">·</span>Print</div><p class="noscript-body">PricePrint runs entirely in your browser using JavaScript — that's why it works offline and keeps your data on this device.</p><p class="noscript-body noscript-body-muted">Please enable JavaScript in your browser settings and reload this page.</p><p class="noscript-promise">Your data still never leaves this device.</p></div></div>
+</noscript>
+
+<header class="topbar">
+  <a href="index.html" class="brand" aria-label="back to PricePrint home">Price<span class="dot">·</span>Print</a>
+  <div class="tagline">your private price memory</div>
+</header>
+
+<section class="tab-intro">
+  <p class="tab-intro-eyebrow">Stores</p>
+  <h1>See which store wins on what kind of item.</h1>
+  <p class="tab-intro-lede">Per-store breakdowns by category — produce, dairy, pantry, beverages. The supermarket that wins on cereal is probably <em>not</em> the one that wins on apples. Per-store pages tell you the full picture.</p>
+</section>
+
+<nav id="tabs" class="tabs" aria-label="screens"></nav>
+
+<main id="screen" role="main"></main>
+
+<section class="tab-explainer">
+  <h2>How it works</h2>
+  <p>Each store you've shopped at gets its own profile: total items logged there, total wins (items where this store was cheapest), the categories it's strongest in, and a list of every item with the per-store unit price next to your overall best.</p>
+  <p>The category breakdown matters because <em>nobody is cheapest at everything.</em> Costco might win on bulk pantry but lose on small produce; Trader Joe's might win on dairy alternatives but lose on fresh fish. The store profile makes those trade-offs legible so you can split your trip without guessing.</p>
+
+  <details class="tab-faq">
+    <summary>FAQ</summary>
+    <dl>
+      <dt>What if I only shop at one store?</dt>
+      <dd>The Stores tab still works — it'll show that one store with everything in it. The comparative power kicks in once you've logged prices at two or more places.</dd>
+
+      <dt>Can I add a store that isn't a chain?</dt>
+      <dd>Yes. The store field on the Log a Price screen accepts any text — farmers market, corner store, anything. It becomes a tracked store and gets its own profile.</dd>
+
+      <dt>Does it know about online grocery / delivery?</dt>
+      <dd>Only if you log the prices you paid online as a store. PricePrint doesn't scrape Instacart or Amazon Fresh — but you can log them by name like any other store.</dd>
+
+      <dt>What does "category strongest in" mean?</dt>
+      <dd>The category where that store has the highest ratio of wins to logs. If 8 out of your 10 produce logs at H Mart are cheaper than the alternatives, "produce" is where H Mart is strongest for you.</dd>
+    </dl>
+  </details>
+</section>
+
+<footer>
+  <div id="footerStats"></div>
+  <div class="footer-actions">
+    <button id="exportBtn" class="link-btn" type="button">Export data</button>
+    <span class="sep">·</span>
+    <button id="importBtn" class="link-btn" type="button">Import data</button>
+    <span class="sep">·</span>
+    <button id="wipeBtn" class="link-btn link-danger" type="button">Wipe all data</button>
+    <span class="sep">·</span>
+    <a href="index.html">About PricePrint</a>
+    <span class="sep">·</span>
+    <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com</a>
+    <span class="sep">·</span>
+    <a href="mailto:hello@artivicolab.com">Contact us</a>
+  </div>
+  <input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" hidden />
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

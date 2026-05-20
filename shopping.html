@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M720E2M37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2M720E2M37');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shopping list that already knows the price — PricePrint</title>
+<meta name="description" content="Plan what you're buying, see the cheapest store for each item from your own price history, and check items off as you shop. Fully offline, no account.">
+<meta name="theme-color" content="#0f7c5a">
+<link rel="canonical" href="https://priceprint.artivicolab.com/shopping.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Shopping list that already knows the price — PricePrint">
+<meta property="og:description" content="See the cheapest store for each item before you leave the house. Log what you actually paid in one tap.">
+<meta property="og:url" content="https://priceprint.artivicolab.com/shopping.html">
+<link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-screen="shopping">
+<noscript>
+  <style>.topbar, .tabs, main, footer, .watermark, .tab-intro, .tab-explainer { display: none !important; } body { background: transparent !important; }</style>
+  <div class="noscript-screen"><div class="noscript-card"><div class="noscript-title">JAVASCRIPT REQUIRED</div><div class="noscript-brand">Price<span class="dot">·</span>Print</div><p class="noscript-body">PricePrint runs entirely in your browser using JavaScript — that's why it works offline and keeps your data on this device.</p><p class="noscript-body noscript-body-muted">Please enable JavaScript in your browser settings and reload this page.</p><p class="noscript-promise">Your data still never leaves this device.</p></div></div>
+</noscript>
+
+<header class="topbar">
+  <a href="index.html" class="brand" aria-label="back to PricePrint home">Price<span class="dot">·</span>Print</a>
+  <div class="tagline">your private price memory</div>
+</header>
+
+<section class="tab-intro">
+  <p class="tab-intro-eyebrow">Shopping</p>
+  <h1>The only shopping list that already knows the price.</h1>
+  <p class="tab-intro-lede">Add items, see what they typically cost at the <em>cheapest store you've shopped</em>, get a running total before you leave the house. Check items off as you go — and log what you actually paid with one tap.</p>
+</section>
+
+<nav id="tabs" class="tabs" aria-label="screens"></nav>
+
+<main id="screen" role="main"></main>
+
+<section class="tab-explainer">
+  <h2>How it works</h2>
+  <p>For every item on your list, PricePrint looks up the single lowest price you've ever logged for it, and which store you logged it at. That becomes the line estimate. The store recommendation is the store with that lowest price — not an average, not an advertised flyer price. <em>Just the cheapest deal you actually witnessed.</em></p>
+  <p>The running total at the bottom shows what your basket should cost if you buy each item at its cheapest known store. If you split across multiple stores, the breakdown tells you how to split. Check an item as you put it in the cart, then tap "log it" to capture the real price you paid — which feeds back into the next list's estimates.</p>
+
+  <details class="tab-faq">
+    <summary>FAQ</summary>
+    <dl>
+      <dt>What if an item isn't in my price history yet?</dt>
+      <dd>You can still add it as a text-only entry — it shows up on the list with "no price yet." Once you log a price for it, the estimate fills in for next time.</dd>
+
+      <dt>Does it remember the list between visits?</dt>
+      <dd>Yes — the active list is stored in IndexedDB on your device. Clear it manually when you're done with a trip, or leave items for next time.</dd>
+
+      <dt>What if I always buy a specific item at a specific store, even if it's not the cheapest?</dt>
+      <dd>The recommendation surfaces the cheapest known store, but nothing stops you from buying it elsewhere — the "log it" step records whatever price/store you actually paid. PricePrint learns from your real behavior, not from where it told you to shop.</dd>
+
+      <dt>Can I share my list with someone else?</dt>
+      <dd>No — there's no sync, no share link, no cloud. Your list lives on this device only. (Use export/import if you really need to move it.)</dd>
+    </dl>
+  </details>
+</section>
+
+<footer>
+  <div id="footerStats"></div>
+  <div class="footer-actions">
+    <button id="exportBtn" class="link-btn" type="button">Export data</button>
+    <span class="sep">·</span>
+    <button id="importBtn" class="link-btn" type="button">Import data</button>
+    <span class="sep">·</span>
+    <button id="wipeBtn" class="link-btn link-danger" type="button">Wipe all data</button>
+    <span class="sep">·</span>
+    <a href="index.html">About PricePrint</a>
+    <span class="sep">·</span>
+    <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com</a>
+    <span class="sep">·</span>
+    <a href="mailto:hello@artivicolab.com">Contact us</a>
+  </div>
+  <input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" hidden />
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

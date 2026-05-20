@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M720E2M37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2M720E2M37');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sale check — is your grocery store lying about a sale? — PricePrint</title>
+<meta name="description" content="PricePrint cross-checks every SALE tag against your own price history. Above-average prices get flagged in red. Real deals get a green check. Works offline.">
+<meta name="theme-color" content="#0f7c5a">
+<link rel="canonical" href="https://priceprint.artivicolab.com/sale-check.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sale check — is your grocery store lying about a sale? — PricePrint">
+<meta property="og:description" content="Cross-check every SALE tag against your own price history. Real deals get a green check.">
+<meta property="og:url" content="https://priceprint.artivicolab.com/sale-check.html">
+<link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-screen="validator">
+<noscript>
+  <style>.topbar, .tabs, main, footer, .watermark, .tab-intro, .tab-explainer { display: none !important; } body { background: transparent !important; }</style>
+  <div class="noscript-screen"><div class="noscript-card"><div class="noscript-title">JAVASCRIPT REQUIRED</div><div class="noscript-brand">Price<span class="dot">·</span>Print</div><p class="noscript-body">PricePrint runs entirely in your browser using JavaScript — that's why it works offline and keeps your data on this device.</p><p class="noscript-body noscript-body-muted">Please enable JavaScript in your browser settings and reload this page.</p><p class="noscript-promise">Your data still never leaves this device.</p></div></div>
+</noscript>
+
+<header class="topbar">
+  <a href="index.html" class="brand" aria-label="back to PricePrint home">Price<span class="dot">·</span>Print</a>
+  <div class="tagline">your private price memory</div>
+</header>
+
+<section class="tab-intro">
+  <p class="tab-intro-eyebrow">Sale check</p>
+  <h1>Find out if your grocery store is lying about a sale.</h1>
+  <p class="tab-intro-lede">PricePrint cross-checks every SALE tag you mark against your own price history. The ones priced <em>above</em> what you usually pay get flagged red. The real deals get a green check. The pattern shows up faster than you'd guess.</p>
+</section>
+
+<nav id="tabs" class="tabs" aria-label="screens"></nav>
+
+<main id="screen" role="main"></main>
+
+<section class="tab-explainer">
+  <h2>How it works</h2>
+  <p>When you log a price and check the "store marked this as a sale" box, PricePrint pulls every non-sale log you've ever made for that same item and computes your typical price. If today's "sale" price is at or above that baseline, it's flagged as a <em>fake sale</em> — the store stuck a SALE tag on something they're charging you normal (or worse) money for.</p>
+  <p>If today's sale price is meaningfully below baseline, it's a real deal. The threshold defaults to your median non-sale price, which is the most stable summary of "what you usually pay" — averages get pulled by one-off promotions, medians don't.</p>
+
+  <details class="tab-faq">
+    <summary>FAQ</summary>
+    <dl>
+      <dt>What counts as a "real" sale here?</dt>
+      <dd>Anything priced below your historical median for that item at non-sale prices. PricePrint doesn't compare to the store's own "regular price" sticker — those are routinely inflated to make sales look bigger. It compares to what <em>you</em> have actually paid.</dd>
+
+      <dt>How many logs do I need before this works for an item?</dt>
+      <dd>Three or four non-sale logs is enough to get a baseline. With only one or two, the screen still shows the sale price but won't pass judgment yet.</dd>
+
+      <dt>Does shrinkflation affect this?</dt>
+      <dd>Yes, and that's the point. Because PricePrint computes per-ounce / per-count price, a "sale" on a smaller package gets exposed — the unit price is what gets compared, not the sticker price.</dd>
+
+      <dt>Why don't you just scrape weekly flyers automatically?</dt>
+      <dd>That would require sending requests to dozens of grocery sites — which breaks the privacy promise and slows the app down. The user typing the SALE flag is the cost; the upside is the data never leaves your device.</dd>
+    </dl>
+  </details>
+</section>
+
+<footer>
+  <div id="footerStats"></div>
+  <div class="footer-actions">
+    <button id="exportBtn" class="link-btn" type="button">Export data</button>
+    <span class="sep">·</span>
+    <button id="importBtn" class="link-btn" type="button">Import data</button>
+    <span class="sep">·</span>
+    <button id="wipeBtn" class="link-btn link-danger" type="button">Wipe all data</button>
+    <span class="sep">·</span>
+    <a href="index.html">About PricePrint</a>
+    <span class="sep">·</span>
+    <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com</a>
+    <span class="sep">·</span>
+    <a href="mailto:hello@artivicolab.com">Contact us</a>
+  </div>
+  <input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" hidden />
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

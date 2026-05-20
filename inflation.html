@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M720E2M37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2M720E2M37');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Personal grocery inflation — track your real CPI — PricePrint</title>
+<meta name="description" content="The U.S. CPI averages a whole country's basket. PricePrint measures yours — the items you actually buy, at the stores you actually shop. Usually a very different number.">
+<meta name="theme-color" content="#0f7c5a">
+<link rel="canonical" href="https://priceprint.artivicolab.com/inflation.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Personal grocery inflation — track your real CPI — PricePrint">
+<meta property="og:description" content="Your basket's inflation rate, not a national average. Side-by-side with the U.S. CPI.">
+<meta property="og:url" content="https://priceprint.artivicolab.com/inflation.html">
+<link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-screen="inflation">
+<noscript>
+  <style>.topbar, .tabs, main, footer, .watermark, .tab-intro, .tab-explainer { display: none !important; } body { background: transparent !important; }</style>
+  <div class="noscript-screen"><div class="noscript-card"><div class="noscript-title">JAVASCRIPT REQUIRED</div><div class="noscript-brand">Price<span class="dot">·</span>Print</div><p class="noscript-body">PricePrint runs entirely in your browser using JavaScript — that's why it works offline and keeps your data on this device.</p><p class="noscript-body noscript-body-muted">Please enable JavaScript in your browser settings and reload this page.</p><p class="noscript-promise">Your data still never leaves this device.</p></div></div>
+</noscript>
+
+<header class="topbar">
+  <a href="index.html" class="brand" aria-label="back to PricePrint home">Price<span class="dot">·</span>Print</a>
+  <div class="tagline">your private price memory</div>
+</header>
+
+<section class="tab-intro">
+  <p class="tab-intro-eyebrow">Inflation</p>
+  <h1>See your personal grocery inflation, not the government's.</h1>
+  <p class="tab-intro-lede">The U.S. CPI averages a whole country's basket. PricePrint measures <em>yours</em> — the things you actually buy, at the stores you actually shop. Usually a very different number, and the gap is the point.</p>
+</section>
+
+<nav id="tabs" class="tabs" aria-label="screens"></nav>
+
+<main id="screen" role="main"></main>
+
+<section class="tab-explainer">
+  <h2>How it works</h2>
+  <p>For every item with logs spanning at least 60 days in the selected range, PricePrint computes the percent change between the oldest unit price in range and the newest. That's the per-item inflation rate. The headline number is the basket-weighted average across all qualifying items — the percent change in your <em>typical basket cost,</em> not the average of percent changes.</p>
+  <p>Alongside it: the most recent U.S. CPI year-over-year (food at home), hardcoded annually so PricePrint can show a comparison without making a network request. The gap between your number and the national number is usually larger than people expect — and it's the gap, not the national number, that explains why your grocery bill feels different from the news.</p>
+
+  <details class="tab-faq">
+    <summary>FAQ</summary>
+    <dl>
+      <dt>Why is my inflation different from what the news reports?</dt>
+      <dd>The CPI is a national average across a fixed reference basket. Your basket includes the specific brands, sizes, and stores you choose. Items that have shrunk (less per package for the same price) drive your number up even when the CPI doesn't catch it.</dd>
+
+      <dt>How often does the U.S. CPI comparison update?</dt>
+      <dd>Manually, by us, roughly quarterly. A GitHub workflow opens a tracking issue every three months to remind the maintainer to refresh the hardcoded constant. The current value's source year is shown on the screen.</dd>
+
+      <dt>What if I just started logging — does this work yet?</dt>
+      <dd>The 3-month range needs items with at least 60 days of log span, so plan to wait a couple months before this number stabilizes. The 1-year range is the most representative once you've been logging consistently.</dd>
+
+      <dt>Does this account for shrinkflation?</dt>
+      <dd>Yes — because everything is computed on unit price (per ounce, per count) not per-package price. A 12 oz bag that becomes a 10 oz bag at the same sticker price registers as a 20% jump.</dd>
+    </dl>
+  </details>
+</section>
+
+<footer>
+  <div id="footerStats"></div>
+  <div class="footer-actions">
+    <button id="exportBtn" class="link-btn" type="button">Export data</button>
+    <span class="sep">·</span>
+    <button id="importBtn" class="link-btn" type="button">Import data</button>
+    <span class="sep">·</span>
+    <button id="wipeBtn" class="link-btn link-danger" type="button">Wipe all data</button>
+    <span class="sep">·</span>
+    <a href="index.html">About PricePrint</a>
+    <span class="sep">·</span>
+    <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com</a>
+    <span class="sep">·</span>
+    <a href="mailto:hello@artivicolab.com">Contact us</a>
+  </div>
+  <input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" hidden />
+</footer>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

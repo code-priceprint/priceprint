@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M720E2M37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2M720E2M37');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PricePrint — Your Personal Grocery Price Memory</title>
+<meta name="description" content="PricePrint is an offline-first grocery price tracker. Log prices as you shop, spot fake sales, and see your personal inflation over time. Your price log stays on your device — no account needed.">
+<meta name="author" content="Artivicolab">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0f7c5a">
+<link rel="manifest" href="/manifest.json">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PricePrint — Your Personal Grocery Price Memory">
+<meta property="og:description" content="Log grocery prices, catch fake sales, track your personal inflation. Your price log stays on your device — no account needed.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="counter">
+
+<noscript>
+  <style>
+    .receipt, footer.r-footer { display: none !important; }
+  </style>
+  <div class="noscript-screen">
+    <div class="noscript-card">
+      <div class="noscript-title">JAVASCRIPT REQUIRED</div>
+      <div class="noscript-brand">Price<span class="dot">·</span>Print</div>
+      <p class="noscript-body">
+        PricePrint runs entirely in your browser using JavaScript — that's why it works
+        offline and keeps your data on this device.
+      </p>
+      <p class="noscript-body noscript-body-muted">
+        Please enable JavaScript and reload to continue.
+      </p>
+    </div>
+  </div>
+</noscript>
+
+<main class="stage">
+
+  <aside class="pitch">
+    <h1 class="pitch-headline">Your grocery bill<br>has a <em>fingerprint</em>.</h1>
+    <p class="pitch-audience">For the person who already reads the unit price, not the sale tag.</p>
+    <p class="pitch-lede">
+      Every product leaves a price <em>print</em> over time — a pattern that reveals
+      whether a sale is real or manufactured.
+    </p>
+    <p class="pitch-lede">
+      PricePrint reads that pattern from the prices <strong>you</strong> log,
+      on <strong>your</strong> device.
+    </p>
+    <ul class="pitch-points">
+      <li><span>01</span> Log a price in the aisle — under 10 seconds.</li>
+      <li><span>02</span> Spot fake sales, shrinkflation, basket inflation.</li>
+    </ul>
+  </aside>
+
+  <article class="receipt">
+
+  <section class="r-header">
+    <div class="r-store">PRICE·PRINT</div>
+    <div class="r-tag">YOUR PERSONAL PRICE MEMORY</div>
+    <div class="r-tag">OFFLINE · ON-DEVICE · FOREVER</div>
+  </section>
+
+  <div class="r-meta">
+    <span>REG #001</span>
+    <span>CASHIER: YOU</span>
+  </div>
+
+  <div class="r-rule double"></div>
+
+  <div class="r-section">TODAY'S RECEIPT</div>
+
+  <div class="r-item">
+    <span class="name">Personal price history</span>
+    <span class="dots"></span>
+    <span class="price">FREE</span>
+  </div>
+  <div class="r-item">
+    <span class="name">Fake-sale detector</span>
+    <span class="dots"></span>
+    <span class="price">FREE</span>
+  </div>
+  <div class="r-item">
+    <span class="name">Unit-price comparison</span>
+    <span class="dots"></span>
+    <span class="price">FREE</span>
+  </div>
+  <div class="r-item">
+    <span class="name">Shrinkflation alert</span>
+    <span class="dots"></span>
+    <span class="price">FREE</span>
+  </div>
+  <div class="r-item">
+    <span class="name">Personal inflation index</span>
+    <span class="dots"></span>
+    <span class="price">FREE</span>
+  </div>
+
+  <div class="r-rule"></div>
+
+  <div class="r-item">
+    <span class="name">SUBTOTAL</span>
+    <span class="dots"></span>
+    <span class="price">$0.00</span>
+  </div>
+  <div class="r-item">
+    <span class="name">TAX</span>
+    <span class="dots"></span>
+    <span class="price">$0.00</span>
+  </div>
+  <div class="r-item">
+    <span class="name">CLOUD STORAGE</span>
+    <span class="dots"></span>
+    <span class="price">$0.00</span>
+  </div>
+
+  <div class="r-rule double"></div>
+
+  <div class="r-item r-total">
+    <span class="name">TOTAL</span>
+    <span class="dots"></span>
+    <span class="price">$0.00</span>
+  </div>
+
+  <div class="r-rule double"></div>
+
+  <!--
+    Carousel of verbatim reported numbers — no synthesis. Each slide is a real figure from a
+    cited source. Cycles every 6s with cross-fade, pauses for prefers-reduced-motion.
+  -->
+  <section class="r-savings r-carousel" aria-label="reported figures">
+    <div class="r-slide r-slide-1">
+      <div class="r-savings-label">★ WALMART PAID THIS FOR OVERCHARGING ★</div>
+      <div class="r-savings-amount">$45 MILLION</div>
+      <div class="r-savings-note">2024 class-action settlement — meat, produce, citrus</div>
+      <div class="r-savings-cite">
+        <a href="https://www.consumerreports.org/money/questionable-business-practices/kroger-stores-overcharging-shoppers-on-sale-items-a9659540552/" target="_blank" rel="noopener">Guardian / CR / FERN, 2025</a>
+      </div>
+    </div>
+
+    <div class="r-slide r-slide-2">
+      <div class="r-savings-label">★ KROGER'S 2024 OPERATING PROFIT ★</div>
+      <div class="r-savings-amount">$3.85 BILLION</div>
+      <div class="r-savings-note">while overcharging shoppers on expired sale tags</div>
+      <div class="r-savings-cite">
+        <a href="https://www.consumerreports.org/money/questionable-business-practices/kroger-stores-overcharging-shoppers-on-sale-items-a9659540552/" target="_blank" rel="noopener">Consumer Reports, 2025</a>
+      </div>
+    </div>
+
+    <div class="r-slide r-slide-3">
+      <div class="r-savings-label">★ ALBERTSONS / SAFEWAY PAID FOR THE SAME THING ★</div>
+      <div class="r-savings-amount">$4 MILLION</div>
+      <div class="r-savings-note">2024 California civil penalty — overcharged customers</div>
+      <div class="r-savings-cite">
+        <a href="https://www.consumerreports.org/money/questionable-business-practices/kroger-stores-overcharging-shoppers-on-sale-items-a9659540552/" target="_blank" rel="noopener">Consumer Reports, 2025</a>
+      </div>
+    </div>
+
+    <div class="r-slide r-slide-4">
+      <div class="r-savings-label">★ WASTED IN THE U.S. EVERY YEAR ★</div>
+      <div class="r-savings-amount">$162 BILLION</div>
+      <div class="r-savings-note">in groceries thrown away — 31% of the food supply</div>
+      <div class="r-savings-cite">
+        <a href="https://www.usda.gov/about-food/food-safety/food-loss-and-waste/food-waste-faqs" target="_blank" rel="noopener">USDA Food Waste FAQs</a>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="r-trust">
+    <div class="r-trust-strong">Your price log stays on this device.</div>
+    <div class="r-trust-sub">Works in your browser — no app, no download, no account.</div>
+  </div>
+
+  <div class="r-cta-wrap">
+    <a href="log-price.html" class="r-cta">START LOGGING</a>
+  </div>
+
+  <div class="r-rule"></div>
+
+  <div class="r-section">WHAT IT ANSWERS</div>
+  <ul class="r-list">
+    <li><strong>Is this sale actually a sale?</strong> Know in two seconds whether you're being played.</li>
+    <li><strong>Which store is really cheapest?</strong> Find out which store actually wins on the things you actually buy.</li>
+    <li><strong>How much more is my basket costing me?</strong> See your real grocery inflation — not the headlines, your basket.</li>
+    <li><strong>Did this package shrink?</strong> Catch shrinkflation the moment a smaller size hits the same price.</li>
+  </ul>
+
+  <div class="r-section">HOW IT WORKS</div>
+  <ol class="r-list ord">
+    <li>Open it in the store. Type the item — it autocompletes from your catalog.</li>
+    <li>Confirm size and store (pre-filled from last entry). Type the price.</li>
+    <li>Done in under 10 seconds.</li>
+  </ol>
+
+  <div class="r-rule"></div>
+
+  <p class="r-fineprint">
+    A <em>fingerprint</em> is unique to you. Your price history is yours alone — not aggregated, not anonymized, not sold. A <em>price print</em> is the mark every product leaves over time, the pattern that reveals truth from marketing. PricePrint is both.
+  </p>
+
+  <div class="r-rule double"></div>
+
+  <div class="r-thanks">★ ★ ★  THANK YOU  ★ ★ ★</div>
+  <div class="r-thanks-sub">log your first price — under 10 seconds</div>
+
+  <div class="r-barcode" aria-hidden="true">
+    <span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span>
+  </div>
+  <div class="r-barcode-num">0  LOG YOUR FIRST PRICE  0</div>
+
+  </article>
+
+</main>
+
+<!-- Below the fold: product proof + tabs explainer. Live OUTSIDE the .stage
+     grid so they flow as full-width blocks instead of being squeezed into
+     the receipt's column. -->
+<main class="below-fold">
+
+  <!-- Product proof: actual screens, not promises. Each frame mirrors the
+       running app so visitors can see what their data will look like before
+       they log their first price. -->
+  <section class="proof" aria-label="what your data looks like">
+    <h2 class="proof-section-title">see what your data looks like</h2>
+    <p class="proof-section-lede">After a few weeks of logging, your app starts answering questions your store doesn't want you to ask.</p>
+
+    <!-- Frame 1: SALE CHECK -->
+    <article class="proof-card">
+      <div class="proof-frame">
+        <div class="proof-screen" id="demo-validator">
+          <div class="proof-demo-loading">loading demo…</div>
+        </div>
+      </div>
+      <div class="proof-copy">
+        <h3 class="proof-headline">find out if your store is lying about a sale.</h3>
+        <p class="proof-body">PricePrint cross-checks every SALE tag against your own history. The ones priced <em>above</em> what you usually pay get flagged in red. The real deals get a green check.</p>
+        <p class="proof-demo-hint">↑ <em>this is the live app, running on demo data — try it.</em></p>
+      </div>
+    </article>
+
+    <!-- Frame 2: COMPARE -->
+    <article class="proof-card proof-card-reverse">
+      <div class="proof-frame">
+        <div class="proof-screen" id="demo-compare">
+          <div class="proof-demo-loading">loading demo…</div>
+        </div>
+      </div>
+      <div class="proof-copy">
+        <h3 class="proof-headline">find out which store is actually cheapest on the things you buy.</h3>
+        <p class="proof-body">Not which store advertises lowest prices — which store wins on <em>your</em> items, with a dollar figure on how much switching would save. Per year.</p>
+        <p class="proof-demo-hint">↑ <em>this is what your compare screen looks like after a few weeks of logging.</em></p>
+      </div>
+    </article>
+
+    <!-- Frame 3: ITEMS CATALOG with chart drill-down -->
+    <article class="proof-card">
+      <div class="proof-frame">
+        <div class="proof-screen" id="demo-list">
+          <div class="proof-demo-loading">loading demo…</div>
+        </div>
+      </div>
+      <div class="proof-copy">
+        <h3 class="proof-headline">watch every item's price story over time.</h3>
+        <p class="proof-body">Every item you log gets its own page. The trend, the cheapest store, the priciest store, the day of the week that wins — drawn from your own purchase history.</p>
+        <p class="proof-demo-hint">↑ <em>tap an item to see its price chart, day-of-week winner, and per-store breakdown.</em></p>
+      </div>
+    </article>
+
+    <!-- Frame 4: INFLATION — full-width centered hero, copy on top -->
+    <article class="proof-card proof-card-stacked">
+      <div class="proof-copy">
+        <h3 class="proof-headline">see your personal inflation, not the government's.</h3>
+        <p class="proof-body">The CPI averages a whole country's basket. Yours measures <em>your</em> basket — the things <em>you</em> actually buy, at the stores <em>you</em> actually shop. Usually a very different number.</p>
+      </div>
+      <div class="proof-frame">
+        <div class="proof-screen" id="demo-inflation">
+          <div class="proof-demo-loading">loading demo…</div>
+        </div>
+      </div>
+      <p class="proof-demo-hint proof-demo-hint-stacked">↑ <em>your number vs. the national CPI, plus the items dragging it up.</em></p>
+    </article>
+
+    <!-- Frame 5: HISTORY — frame right, copy left -->
+    <article class="proof-card proof-card-reverse">
+      <div class="proof-frame">
+        <div class="proof-screen" id="demo-history">
+          <div class="proof-demo-loading">loading demo…</div>
+        </div>
+      </div>
+      <div class="proof-copy">
+        <h3 class="proof-headline">every price you've ever paid, searchable.</h3>
+        <p class="proof-body">A flat ledger of everything you've logged — sortable by date, item, or store. Type "milk" and see every milk price you've paid, anywhere, ever.</p>
+        <p class="proof-demo-hint">↑ <em>search, sort, and filter your full price history.</em></p>
+      </div>
+    </article>
+
+    <!-- Frame 6: SHOPPING — frame left, copy right -->
+    <article class="proof-card">
+      <div class="proof-frame">
+        <div class="proof-screen" id="demo-shopping">
+          <div class="proof-demo-loading">loading demo…</div>
+        </div>
+      </div>
+      <div class="proof-copy">
+        <h3 class="proof-headline">the only shopping list that knows the price.</h3>
+        <p class="proof-body">Add items, see what they typically cost at the cheapest store, get a running total before you leave the house. Check items off as you go — and log what you actually paid in one tap.</p>
+        <p class="proof-demo-hint">↑ <em>add an item, see the estimate, tap "log it" to capture the real price.</em></p>
+      </div>
+    </article>
+
+    <!-- Frame 7: LOG PRICE — compact centered card, the core action -->
+    <article class="proof-card proof-card-compact">
+      <div class="proof-copy">
+        <h3 class="proof-headline">log a price in under ten seconds.</h3>
+        <p class="proof-body">Item, store, size, price. That's it. The whole point of the app is to make this so fast you'll actually do it in the aisle.</p>
+      </div>
+      <div class="proof-frame">
+        <div class="proof-screen" id="demo-entry">
+          <div class="proof-demo-loading">loading demo…</div>
+        </div>
+      </div>
+      <p class="proof-demo-hint proof-demo-hint-stacked">↑ <em>the form is the home screen. nothing to learn.</em></p>
+    </article>
+
+    <p class="proof-footer-line">All from the prices <em>you</em> type. No accounts, no upload, all on your device.</p>
+  </section>
+
+  <section class="tabs-tour" aria-label="what's inside the app">
+    <h2 class="tabs-tour-title">eight tabs. eight questions answered.</h2>
+    <p class="tabs-tour-lede">Each one runs on the prices <em>you</em> log.</p>
+
+    <div class="tabs-tour-grid">
+      <a href="log-price.html" class="tab-chip">
+        <span class="tab-chip-name">Log price</span>
+        <span class="tab-chip-q">how much was it?</span>
+      </a>
+      <a href="shopping.html" class="tab-chip">
+        <span class="tab-chip-name">Shopping</span>
+        <span class="tab-chip-q">where do I shop today?</span>
+      </a>
+      <a href="compare.html" class="tab-chip">
+        <span class="tab-chip-name">Compare</span>
+        <span class="tab-chip-q">which store is cheapest?</span>
+      </a>
+      <a href="sale-check.html" class="tab-chip">
+        <span class="tab-chip-name">Sale check</span>
+        <span class="tab-chip-q">is this sale real?</span>
+      </a>
+      <a href="history.html" class="tab-chip">
+        <span class="tab-chip-name">History</span>
+        <span class="tab-chip-q">what did I pay last time?</span>
+      </a>
+      <a href="list.html" class="tab-chip">
+        <span class="tab-chip-name">List</span>
+        <span class="tab-chip-q">what do I buy most?</span>
+      </a>
+      <a href="stores.html" class="tab-chip">
+        <span class="tab-chip-name">Stores</span>
+        <span class="tab-chip-q">which store wins what?</span>
+      </a>
+      <a href="inflation.html" class="tab-chip">
+        <span class="tab-chip-name">Inflation</span>
+        <span class="tab-chip-q">am I paying more this year?</span>
+      </a>
+    </div>
+
+    <div class="tabs-tour-cta">
+      <a href="log-price.html" class="r-cta">OPEN THE APP</a>
+    </div>
+  </section>
+
+</main><!-- .below-fold -->
+
+<!--
+  TODO (proof section): the receipt above is a hook, not the product. Add a screenshot
+  gallery or in-browser demo here once app UI is stable. Reviewer flagged this as the
+  most expensive missing element on the page. Candidates to show:
+    1. Item-entry screen mid-typing (proves <10s claim).
+    2. Sale validator firing on a real product with sparkline.
+    3. Personal inflation chart over 12 months.
+  Should sit between the receipt and the footer, full-width on desktop.
+-->
+
+<section class="made-by" aria-label="about the maker">
+  <p class="made-by-eyebrow">Who's behind this</p>
+  <p class="made-by-line">PricePrint is built by <strong>Artivicolab</strong> — a small studio shipping privacy-first tools that don't ship your data anywhere.</p>
+  <div class="made-by-actions">
+    <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com →</a>
+    <a href="mailto:hello@artivicolab.com">Contact us</a>
+  </div>
+</section>
+
+<footer class="r-footer">
+  built by <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab</a>
+  <span class="r-footer-sep">·</span>
+  <a href="mailto:hello@artivicolab.com">contact us</a>
+</footer>
+
+<script type="module" src="js/demo-bootstrap.js"></script>
+
+</body>
+</html>
