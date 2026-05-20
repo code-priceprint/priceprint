@@ -3453,16 +3453,29 @@ main.below-fold { max-width: 1200px; padding: 0 24px 64px; }
   --size: 20px;
   font-size: var(--size);
   transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--radius)) rotate(calc(-1 * var(--angle)));
-  animation: burst-twinkle 2.6s ease-in-out infinite;
+  animation: burst-twinkle 2.2s ease-in-out infinite;
   animation-delay: var(--delay, 0s);
   opacity: 0.85;
 }
 @keyframes burst-twinkle {
-  0%, 100% { transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--radius))             rotate(calc(-1 * var(--angle))) scale(0.85); opacity: 0.55; }
-  50%      { transform: translate(-50%, -50%) rotate(var(--angle)) translate(calc(var(--radius) + 10px)) rotate(calc(-1 * var(--angle))) scale(1.1);  opacity: 1; }
+  0%, 100% {
+    transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--radius))              rotate(calc(-1 * var(--angle))) scale(0.6);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(var(--angle)) translate(calc(var(--radius) + 22px)) rotate(calc(-1 * var(--angle))) scale(1.35);
+    opacity: 1;
+  }
 }
+/* Reduce Motion is on by default for a lot of users (especially macOS). Don't
+   strip animation entirely — just drop the motion-heavy radius/scale change
+   and keep a gentle opacity pulse so the burst still reads as alive. */
 @media (prefers-reduced-motion: reduce) {
-  .burst-star { animation: none; }
+  .burst-star { animation: burst-twinkle-soft 3s ease-in-out infinite; animation-delay: var(--delay, 0s); }
+}
+@keyframes burst-twinkle-soft {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
 }
 /* Eight stars at evenly spaced angles, with deliberately varied radii and
    sizes so the burst looks scattered rather than mechanical. */
