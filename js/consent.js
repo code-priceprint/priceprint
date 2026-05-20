@@ -45,8 +45,7 @@
     el.innerHTML = `
       <div class="consent-banner-inner">
         <div class="consent-banner-text">
-          <strong>Heads up — we use Google Analytics</strong> to count page visits and which features get used.
-          Your logged grocery prices stay on this device. Decline below and PricePrint still works exactly the same.
+          Google Analytics counts page visits. That's it — PricePrint has no server, so the prices you log never leave this device.
         </div>
         <div class="consent-banner-actions">
           <button type="button" class="consent-btn consent-btn-secondary" data-consent="denied">Decline</button>
