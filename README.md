@@ -50,3 +50,13 @@ Then visit http://localhost:8000/app.html
 - Single-writer IndexedDB pattern: `addPriceLog` writes the price + bumps the item's `last_logged_at` in one transaction.
 - Display unit per family is fixed for now (oz / fl oz / ct). When the schema grows we'll let users override per item via `items.preferred_unit`.
 - No service worker yet — adding one when we ship.
+
+## Analytics
+
+Google Analytics 4 web stream:
+
+- **Production URL:** https://priceprint.artivicolab.com
+- **Measurement ID:** `G-2M720E2M37` (the `gtag` config in every page's `<head>`)
+- **Stream ID:** `14916969677` (only needed for server-side events via the GA Measurement Protocol)
+
+If you ever need to swap the property, grep `G-2M720E2M37` to find every page that needs updating.
