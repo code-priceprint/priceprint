@@ -54,13 +54,26 @@
 </header>
 
 <section class="not-found">
-  <img
-    src="/404.png"
-    alt="The PricePrint mascot looking puzzled, holding a tiny receipt that reads 'requested page ... ?'"
-    class="not-found-mascot"
-    width="941"
-    height="941"
-  />
+  <div class="not-found-mascot-wrap">
+    <!-- Decorative star burst — sits behind the mascot, pulses outward.
+         Brand-green to match the rest of the site. Aria-hidden so screen
+         readers ignore the deco. -->
+    <span class="burst-star burst-star-1" aria-hidden="true">★</span>
+    <span class="burst-star burst-star-2" aria-hidden="true">✦</span>
+    <span class="burst-star burst-star-3" aria-hidden="true">★</span>
+    <span class="burst-star burst-star-4" aria-hidden="true">✦</span>
+    <span class="burst-star burst-star-5" aria-hidden="true">★</span>
+    <span class="burst-star burst-star-6" aria-hidden="true">✦</span>
+    <span class="burst-star burst-star-7" aria-hidden="true">★</span>
+    <span class="burst-star burst-star-8" aria-hidden="true">✦</span>
+    <img
+      src="/404.png"
+      alt="The PricePrint mascot looking puzzled, holding a tiny receipt that reads 'requested page ... ?'"
+      class="not-found-mascot"
+      width="941"
+      height="941"
+    />
+  </div>
 
   <h1 class="not-found-headline">that aisle doesn't exist.</h1>
   <p class="not-found-message">the rest of the store is open, though.</p>
