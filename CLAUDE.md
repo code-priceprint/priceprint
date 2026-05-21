@@ -31,3 +31,14 @@ Nothing the user types ever leaves the device. No fetch() to any external host e
 ## What "done" means for any feature
 
 A feature is shippable when a user can complete the core action on mobile Chrome and mobile Safari in under 10 seconds, with no network connection, with no account.
+
+## Active ad campaign — TEMPORARY tracking tags (remove when it ends)
+
+A Google Ads campaign is currently running. The following tags exist ONLY to support it and MUST be removed when the campaign ends:
+
+- **Google Ads tag** `AW-17221241617` — the extra `gtag('config', 'AW-17221241617')` line in the `<head>` gtag block on every page.
+- **Conversion event** `AW-17221241617/yyIzCIPOruQaEJGW3ZNA` — the page-view `gtag('event', 'conversion', …)` in `index.html`'s `<head>`.
+
+The GA4 tag `G-2M720E2M37` and the consent banner are NOT part of the campaign — leave those in place.
+
+**At the START of every session that touches this project, ASK the user: "Is the Google Ads campaign still running?"** If they say it has ended, remove the two items above (and update the privacy page's ads disclosure). If still running, leave them. Do not assume — always ask.
