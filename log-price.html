@@ -52,8 +52,13 @@
 </head>
 <body data-screen="entry">
 <noscript>
-  <style>.topbar, .tabs, main, footer, .watermark, .tab-intro, .tab-explainer { display: none !important; } body { background: transparent !important; }</style>
-  <div class="noscript-screen"><div class="noscript-card"><div class="noscript-title">JAVASCRIPT REQUIRED</div><div class="noscript-brand">Price<span class="dot">·</span>Print</div><p class="noscript-body">PricePrint runs entirely in your browser using JavaScript — that's why it works offline and keeps your data on this device.</p><p class="noscript-body noscript-body-muted">Please enable JavaScript in your browser settings and reload this page.</p><p class="noscript-promise">Your data still never leaves this device.</p></div></div>
+  <style>
+    /* The interactive app screen needs JS. The intro, "how it works"
+       explainer and FAQ are static HTML and stay visible so the page is
+       readable and indexable without JavaScript. Only the empty
+       JS-mounted shell (#tabs nav + #screen) is hidden. */
+    #tabs, #screen { display: none !important; }
+  </style>
 </noscript>
 
 <header class="topbar">

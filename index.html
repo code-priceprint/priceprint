@@ -54,21 +54,12 @@
 
 <noscript>
   <style>
-    .receipt, footer.r-footer { display: none !important; }
+    /* Only the live in-page demos need JS to mount. Hide their "loading…"
+       frames so the static landing content — headline, pitch, value props,
+       links, footer — reads cleanly for crawlers and no-JS visitors. The
+       page is fully usable without JavaScript; do NOT block it. */
+    .proof-frame { display: none !important; }
   </style>
-  <div class="noscript-screen">
-    <div class="noscript-card">
-      <div class="noscript-title">JAVASCRIPT REQUIRED</div>
-      <div class="noscript-brand">Price<span class="dot">·</span>Print</div>
-      <p class="noscript-body">
-        PricePrint runs entirely in your browser using JavaScript — that's why it works
-        offline and keeps your data on this device.
-      </p>
-      <p class="noscript-body noscript-body-muted">
-        Please enable JavaScript and reload to continue.
-      </p>
-    </div>
-  </div>
 </noscript>
 
 <main class="stage">
