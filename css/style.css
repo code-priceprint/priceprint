@@ -3607,3 +3607,270 @@ main.below-fold { max-width: 1200px; padding: 0 24px 64px; }
   font-size: 13px !important;
   color: #6b6657;
 }
+
+/* ---------- personal inflation calculator (lead-magnet page) ---------- */
+
+.calc {
+  max-width: 680px;
+  margin: 8px auto 0;
+  padding: 0 20px;
+}
+.calc-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto 1fr auto;
+  gap: 10px;
+  align-items: end;
+  padding: 0 4px 8px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #6b6657;
+}
+/* Header labels line up over the inputs; the arrow + remove columns get blanks */
+.calc-head-item { grid-column: 1; }
+.calc-head-was  { grid-column: 2; }
+.calc-head-now  { grid-column: 4; }
+
+.calc-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 4px;
+}
+.calc-item,
+.calc-was,
+.calc-now {
+  width: 100%;
+  font-family: var(--font);
+  font-size: 15px;
+  padding: 10px 12px;
+  border: 1px solid #d4cfbe;
+  border-radius: 4px;
+  background: #fffdf6;
+  color: #1a1a1a;
+}
+.calc-item:focus,
+.calc-was:focus,
+.calc-now:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 2px rgba(10, 94, 68, 0.15);
+}
+.calc-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.calc-prefix {
+  position: absolute;
+  left: 10px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  color: #8a8480;
+  pointer-events: none;
+}
+.calc-field .calc-was,
+.calc-field .calc-now { padding-left: 24px; }
+.calc-arrow {
+  color: #8a8480;
+  font-size: 16px;
+  text-align: center;
+}
+.calc-remove {
+  border: 0;
+  background: transparent;
+  color: #b5b0a1;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.calc-remove:hover { color: var(--err); background: rgba(185, 28, 28, 0.08); }
+
+.calc-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 10px 4px 0;
+}
+.calc-add {
+  border: 1px dashed var(--brand);
+  background: transparent;
+  color: var(--brand);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 8px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.calc-add:hover { background: rgba(10, 94, 68, 0.08); }
+.calc-period {
+  font-family: var(--font);
+  font-size: 14px;
+  color: #3a3835;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.calc-period select {
+  font-family: var(--font);
+  font-size: 14px;
+  padding: 7px 10px;
+  border: 1px solid #d4cfbe;
+  border-radius: 4px;
+  background: #fffdf6;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+.calc-loading {
+  text-align: center;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a8480;
+  padding: 24px 0;
+}
+
+.calc-result {
+  margin: 24px 0 8px;
+  padding: 24px 22px;
+  border: 2px dashed var(--brand);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(10, 94, 68, 0.08), rgba(10, 94, 68, 0.03));
+  text-align: center;
+  font-family: var(--font);
+}
+.calc-result-label {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: #5a5751;
+  margin-bottom: 6px;
+}
+.calc-result-big {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: clamp(40px, 9vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.calc-result-big.is-up   { color: var(--err); }
+.calc-result-big.is-down { color: var(--ok); }
+.calc-result-unit {
+  font-size: 0.4em;
+  font-weight: 700;
+  color: #6b6657;
+  letter-spacing: 0;
+}
+.calc-result-sub {
+  font-size: 14px;
+  color: #3a3835;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+.calc-result-compare {
+  padding-top: 14px;
+  border-top: 1px dashed #b5b0a1;
+  font-size: 15px;
+  color: #2a2826;
+  line-height: 1.5;
+}
+.calc-result-compare .is-up   { color: var(--err); }
+.calc-result-compare .is-down { color: var(--ok); }
+.calc-result-cite {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  color: #5a5751;
+  margin-top: 6px;
+  letter-spacing: 0.02em;
+}
+.calc-result-cta {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed #b5b0a1;
+}
+.calc-result-cta p {
+  font-size: 14px;
+  color: #3a3835;
+  line-height: 1.55;
+  margin: 0 0 14px;
+}
+.calc-cta-btn {
+  display: inline-block;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--brand);
+  color: #fff;
+  text-decoration: none;
+  padding: 13px 24px;
+  border-radius: 3px;
+  transition: opacity 0.15s ease;
+}
+.calc-cta-btn:hover { opacity: 0.92; }
+
+.tab-explainer-cta {
+  text-align: center;
+  margin: 4px 0 18px;
+}
+/* The green CTA button sits inside .tab-explainer, where `.tab-explainer a`
+   forces brand-green text — which made the button green-on-green (invisible).
+   Win the cascade back: white text, no inherited underline. */
+.tab-explainer .hook-cta,
+.tab-explainer .calc-cta-btn {
+  color: #fff;
+  border-bottom: 0;
+}
+.tab-explainer .hook-cta:hover,
+.tab-explainer .calc-cta-btn:hover {
+  color: #fff;
+  border-bottom: 0;
+}
+
+@media (max-width: 560px) {
+  .calc-head { display: none; }
+  .calc-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "item item"
+      "was  now"
+      "rm   rm";
+    gap: 8px;
+    padding: 10px 4px;
+    border-bottom: 1px dashed #e0dcce;
+  }
+  .calc-item  { grid-area: item; }
+  .calc-field-was { grid-area: was; }
+  .calc-field-now { grid-area: now; }
+  .calc-arrow { display: none; }
+  .calc-remove { grid-area: rm; justify-self: start; }
+}
+
+/* Inline links to the calculator from the proof card + tab intros */
+.proof-inline-link {
+  color: var(--brand);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(10, 94, 68, 0.5);
+}
+.proof-inline-link:hover { border-bottom-style: solid; }
+.tab-intro-lede a {
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(10, 94, 68, 0.5);
+}
+.tab-intro-lede a:hover { border-bottom-style: solid; }

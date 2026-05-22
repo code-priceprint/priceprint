@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M720E2M37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
+  try {
+    if (localStorage.getItem('priceprint.consent') === 'granted') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    }
+  } catch (e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-2M720E2M37');
+  gtag('config', 'AW-17221241617');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Personal Inflation Calculator — your real rate vs the CPI | PricePrint</title>
+<meta name="description" content="Free personal inflation calculator. Enter what your groceries cost before and now to find your real inflation rate — and see how far it is from the official CPI.">
+<meta name="theme-color" content="#0f7c5a">
+<link rel="canonical" href="https://priceprint.artivicolab.com/inflation-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Personal Inflation Calculator — your real rate vs the CPI | PricePrint">
+<meta property="og:description" content="The CPI is a national average of a basket you don't buy. Calculate YOUR real inflation rate from what you actually pay.">
+<meta property="og:url" content="https://priceprint.artivicolab.com/inflation-calculator.html">
+<meta property="og:image" content="https://priceprint.artivicolab.com/og-image.jpg">
+<meta property="og:image:width" content="1298">
+<meta property="og:image:height" content="682">
+<meta property="og:image:alt" content="PricePrint — your personal grocery price memory">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Personal Inflation Calculator — your real rate vs the CPI | PricePrint">
+<meta name="twitter:description" content="The CPI is a national average of a basket you don't buy. Calculate YOUR real inflation rate from what you actually pay.">
+<meta name="twitter:image" content="https://priceprint.artivicolab.com/og-image.jpg">
+<link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<noscript>
+  <style>
+    /* The calculator itself needs JS to compute. The explainer + FAQ are
+       static and stay readable/indexable without it. */
+    #calc { display: none !important; }
+  </style>
+</noscript>
+
+<header class="topbar">
+  <a href="/" class="brand" aria-label="back to PricePrint home">
+    <img class="brand-logo" src="/android-icon-48x48.png" alt="" aria-hidden="true" />
+    Price<span class="dot">·</span>Print
+  </a>
+  <div class="tagline">your private price memory</div>
+</header>
+
+<section class="tab-intro">
+  <p class="tab-intro-eyebrow">Free tool</p>
+  <h1>Personal inflation calculator.</h1>
+  <p class="tab-intro-lede">The official inflation rate is a national average of a basket you don't actually buy. Enter what a few of your regular items cost <em>before</em> and <em>now</em> — get your real rate, and see how far it is from the government's number.</p>
+</section>
+
+<section class="calc" id="calc" aria-label="personal inflation calculator">
+  <div class="calc-head">
+    <span class="calc-head-item">ITEM</span>
+    <span class="calc-head-was">PAID BEFORE</span>
+    <span class="calc-head-now">PAYING NOW</span>
+  </div>
+  <div id="calcMount">
+    <p class="calc-loading">loading calculator…</p>
+  </div>
+</section>
+
+<section class="tab-explainer">
+  <h2>Why your inflation isn't the inflation on the news</h2>
+  <p>The Consumer Price Index (CPI) tracks a fixed, averaged basket across the whole country — thousands of goods and services weighted by national spending patterns. It's a useful macro number, but it is almost certainly <em>not your number</em>. You don't buy the average basket. You buy <em>your</em> basket, at <em>your</em> stores, in <em>your</em> sizes.</p>
+  <p>Two things push your personal rate away from the headline figure. First, weighting: if you spend more of your budget on the things that rose fastest (groceries, insurance, rent), your rate runs hotter than the blended average. Second, shrinkflation: when a 12 oz package quietly becomes 10 oz at the same price, that's a 20% per-unit increase the sticker price hides — and it shows up in what you actually pay long before it shows up in a national index.</p>
+  <p>This calculator gives you a one-time snapshot from a handful of items. To see the real picture — every item, every store, tracked over months and years — you need a running record of what you pay.</p>
+
+  <div class="tab-explainer-cta">
+    <a href="/log-price.html" class="hook-cta">Start tracking your real inflation →</a>
+  </div>
+
+  <details class="tab-faq">
+    <summary>FAQ</summary>
+    <dl>
+      <dt>How is my personal inflation rate calculated?</dt>
+      <dd>It sums what your items cost "before" and "now," then compounds the change into an annual rate over the time period you pick. Example: a basket that went from $20 to $23 over one year is +15% annualized; over two years it's about +7.2% per year.</dd>
+
+      <dt>Where does the official rate it compares against come from?</dt>
+      <dd>It uses the most recent U.S. CPI year-over-year figure (food at home), refreshed periodically. It's a reference point, not a live feed — PricePrint never makes network requests with your data.</dd>
+
+      <dt>Is anything I type here sent anywhere?</dt>
+      <dd>No. The calculator runs entirely in your browser. Nothing you enter is uploaded, stored on a server, or logged — there is no server. Reload the page and it's gone.</dd>
+
+      <dt>How do I track this over time instead of one snapshot?</dt>
+      <dd>Open the free PricePrint app and log prices as you shop. The Inflation tab then computes your personal rate continuously from your real purchase history, broken down by item and store.</dd>
+    </dl>
+  </details>
+</section>
+
+<footer>
+  <div class="footer-actions">
+    <a href="/">About PricePrint</a>
+    <span class="sep">·</span>
+    <a href="/inflation-calculator.html">Inflation calculator</a>
+    <span class="sep">·</span>
+    <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com</a>
+    <span class="sep">·</span>
+    <a href="mailto:artivicolab@gmail.com">Contact us</a>
+    <span class="sep">·</span>
+    <a href="/privacy.html">Privacy</a>
+    <span class="sep">·</span>
+    <a href="#" class="cookie-prefs-link" onclick="event.preventDefault(); if(window.priceprintShowConsent) window.priceprintShowConsent();">Cookie preferences</a>
+  </div>
+</footer>
+
+<script src="/js/consent.js" defer></script>
+<script type="module">
+  import { mountInflationCalculator } from '/js/inflation-calculator.js';
+  mountInflationCalculator(document.getElementById('calcMount'));
+</script>
+</body>
+</html>

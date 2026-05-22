@@ -58,7 +58,11 @@ async function init() {
   // top-nav clicks feel different from chip-link clicks on the home page.
   tabs.innerHTML = Object.entries(SCREENS).map(([k, v]) =>
     `<a class="tab${k === initialTab ? ' active' : ''}" data-screen="${k}" href="${v.path}">${v.label}</a>`
-  ).join('') + '<span class="tabs-scroll-hint" aria-hidden="true">→</span>';
+  ).join('')
+    // Standalone tool page (not an app screen) — no data-screen, so the click
+    // handler ignores it and the browser just navigates to it.
+    + '<a class="tab tab-tool" href="/inflation-calculator.html">Calculator</a>'
+    + '<span class="tabs-scroll-hint" aria-hidden="true">→</span>';
 
   // Show/hide the scroll-hint arrow based on overflow + scroll position.
   function updateScrollHint() {
