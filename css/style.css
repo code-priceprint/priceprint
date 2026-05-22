@@ -3879,22 +3879,24 @@ main.below-fold { max-width: 1200px; padding: 0 24px 64px; }
 
 .pwa-install {
   position: fixed;
-  right: 18px;
-  bottom: 18px;
+  right: 20px;
+  bottom: 20px;
   z-index: 9000;
-  display: flex;
-  align-items: flex-start;
-  gap: 4px;
   animation: pwa-install-in 0.3s ease-out;
 }
 @keyframes pwa-install-in {
   from { transform: translateY(16px) scale(0.9); opacity: 0; }
   to   { transform: translateY(0) scale(1); opacity: 1; }
 }
+/* Big square tile so the logo reads clearly: large logo on top, label below. */
 .pwa-install-btn {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  width: 104px;
+  height: 104px;
   border: 0;
   cursor: pointer;
   background: var(--brand);
@@ -3904,37 +3906,40 @@ main.below-fold { max-width: 1200px; padding: 0 24px 64px; }
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 0 18px;
-  height: 52px;
-  border-radius: 26px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22), 0 2px 4px rgba(0, 0, 0, 0.12);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  border-radius: 20px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24), 0 2px 5px rgba(0, 0, 0, 0.14);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .pwa-install-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.26), 0 3px 6px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28), 0 3px 7px rgba(0, 0, 0, 0.16);
 }
-.pwa-install-glyph {
-  font-size: 18px;
-  line-height: 1;
-  font-weight: 800;
+.pwa-install-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: #fff;
+  padding: 4px;
+  flex-shrink: 0;
+  display: block;
 }
 .pwa-install-close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
   border: 0;
   cursor: pointer;
   background: #1a1a1a;
   color: #fff;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  margin-top: -4px;
-  margin-left: -10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   transition: background 0.15s ease;
 }
 .pwa-install-close:hover { background: #000; }
@@ -3977,6 +3982,18 @@ main.below-fold { max-width: 1200px; padding: 0 24px 64px; }
 .pwa-ios-hint-close:hover { background: rgba(10, 94, 68, 0.08); }
 
 @media (max-width: 640px) {
-  .pwa-install { right: 12px; bottom: 12px; }
-  .pwa-install-btn { height: 48px; font-size: 12px; padding: 0 16px; }
+  .pwa-install { right: 14px; bottom: 14px; }
+  .pwa-install-btn { width: 92px; height: 92px; font-size: 12px; }
+  .pwa-install-logo { width: 48px; height: 48px; }
 }
+
+/* Footer copyright line (all pages) */
+.footer-copyright {
+  margin-top: 10px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: #8a8480;
+  text-align: center;
+}
+.footer-actions + .footer-copyright { padding-top: 4px; }

@@ -116,7 +116,7 @@
     <span class="sep">·</span>
     <button id="wipeBtn" class="link-btn link-danger" type="button">Wipe all data</button>
     <span class="sep">·</span>
-    <a href="index.html">About PricePrint</a>
+    <a href="/about.html">About PricePrint</a>
     <span class="sep">·</span>
     <a href="/inflation-calculator.html">Inflation calculator</a>
     <span class="sep">·</span>
@@ -126,9 +126,12 @@
     <span class="sep">·</span>
     <a href="/privacy.html">Privacy</a>
     <span class="sep">·</span>
+    <a href="#" class="get-app-link" onclick="event.preventDefault(); if(window.priceprintShowInstall) window.priceprintShowInstall();">Get the app</a>
+    <span class="sep">·</span>
     <a href="#" class="cookie-prefs-link" onclick="event.preventDefault(); if(window.priceprintShowConsent) window.priceprintShowConsent();">Cookie preferences</a>
   </div>
   <input id="importFile" type="file" accept=".json,.txt,application/json,text/plain" hidden />
+  <div class="footer-copyright">© <span class="footer-year">2026</span> Artivicolab. All rights reserved.</div>
 </footer>
 
 <script type="module" src="js/app.js"></script>

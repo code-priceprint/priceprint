@@ -112,11 +112,11 @@
     wrap.id = 'pwa-install';
     wrap.className = 'pwa-install';
     wrap.innerHTML = `
-      <button type="button" class="pwa-install-btn" aria-label="Install PricePrint app" title="Install app">
-        <span class="pwa-install-glyph" aria-hidden="true">↓</span>
-        <span class="pwa-install-label">Install</span>
+      <button type="button" class="pwa-install-btn" aria-label="Download PricePrint app" title="Download app">
+        <img class="pwa-install-logo" src="/android-icon-96x96.png" alt="" aria-hidden="true" />
+        <span class="pwa-install-label">Download</span>
       </button>
-      <button type="button" class="pwa-install-close" aria-label="Dismiss install button" title="Dismiss">×</button>
+      <button type="button" class="pwa-install-close" aria-label="Dismiss download button" title="Dismiss">×</button>
     `;
     document.body.appendChild(wrap);
     wrap.querySelector('.pwa-install-close').addEventListener('click', () => {
@@ -128,9 +128,35 @@
     return wrap;
   }
 
+  // Exact, minimal install steps for the visitor's actual browser. Browsers
+  // don't let a page install itself (security) — beyond the one-tap Chromium
+  // prompt, the rest is the browser's own flow, so the best we can do is point
+  // precisely at the right control.
+  function installInstructions() {
+    const ua = navigator.userAgent;
+    const iOS = /iphone|ipad|ipod/i.test(ua) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS
+    if (iOS) {
+      return 'Tap the <strong>Share</strong> icon (the box with an up-arrow), then choose <strong>"Add to Home Screen."</strong>';
+    }
+    if (/android/i.test(ua)) {
+      return 'Tap the <strong>⋮</strong> menu (top-right), then <strong>"Add to Home screen"</strong> or <strong>"Install app."</strong>';
+    }
+    if (/edg\//i.test(ua)) {
+      return 'Click the <strong>install icon</strong> in the address bar, or the <strong>⋯</strong> menu → <strong>Apps → "Install PricePrint."</strong>';
+    }
+    if (/chrome|chromium|crios/i.test(ua)) {
+      return 'Click the <strong>install icon</strong> on the right of the address bar, or the <strong>⋮</strong> menu → <strong>"Install PricePrint."</strong>';
+    }
+    if (/safari/i.test(ua)) {
+      return 'In Safari, choose <strong>File → Add to Dock</strong> (or the <strong>Share</strong> button → "Add to Dock").';
+    }
+    return 'Open your browser menu and choose <strong>"Install PricePrint"</strong> or <strong>"Add to Home Screen."</strong>';
+  }
+
   async function onInstallClick() {
     if (deferredPrompt) {
-      // Chromium: real one-tap install.
+      // Chromium: real one-tap install via the browser's own prompt.
       deferredPrompt.prompt();
       const choice = await deferredPrompt.userChoice;
       deferredPrompt = null;
@@ -138,11 +164,9 @@
         installBtn.remove();
         installBtn = null;
       }
-    } else if (isIOS()) {
-      showHint('To install: tap the <strong>Share</strong> icon, then <strong>"Add to Home Screen."</strong>');
     } else {
-      // Desktop/other browsers with no install event yet: point at the menu.
-      showHint('To install: open your browser menu and choose <strong>"Install PricePrint"</strong> or <strong>"Add to Home Screen."</strong>');
+      // No install event available — show the exact steps for this browser.
+      showHint(installInstructions());
     }
   }
 
@@ -169,6 +193,19 @@
     installBtn = buildInstallButton();
   }
 
+  // Footer "Get the app" link calls this to bring the download button back
+  // after the visitor has dismissed it (clears the dismissed flag).
+  window.priceprintShowInstall = function () {
+    try { localStorage.removeItem(INSTALL_DISMISS_KEY); } catch (e) {}
+    if (isStandalone()) {
+      showHint('You\'ve already installed PricePrint — open it from your home screen.');
+      return;
+    }
+    maybeShowInstall();
+    // If consent hasn't been decided yet, the button is gated; clicking the
+    // install button later still works once consent is handled.
+  };
+
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -181,4 +218,15 @@
   // Returning visitor (consent already decided): try on load, e.g. iOS path
   // or if beforeinstallprompt fires after consent.
   window.addEventListener('load', maybeShowInstall);
+
+  // Keep the footer copyright year current without a yearly code edit.
+  function setFooterYear() {
+    const y = String(new Date().getFullYear());
+    document.querySelectorAll('.footer-year').forEach((el) => { el.textContent = y; });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setFooterYear);
+  } else {
+    setFooterYear();
+  }
 })();
