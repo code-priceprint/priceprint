@@ -49,7 +49,54 @@ Then visit http://localhost:8000/app.html
 - ES modules (`<script type="module">`). No bundler, no framework, no dependencies.
 - Single-writer IndexedDB pattern: `addPriceLog` writes the price + bumps the item's `last_logged_at` in one transaction.
 - Display unit per family is fixed for now (oz / fl oz / ct). When the schema grows we'll let users override per item via `items.preferred_unit`.
-- No service worker yet — adding one when we ship.
+- Service worker (`sw.js`) is network-first: online visitors always get the freshly deployed file; cache is an offline fallback only. Bump `CACHE_VERSION` to evict the old cache.
+
+## Import / export format
+
+Export produces a single JSON object; import expects the same shape. The fastest way to see a valid file is to click **Export JSON** and open it. Full schema:
+
+```jsonc
+{
+  "version": 1,
+  "exported_at": "2026-05-21T18:00:00.000Z",   // ISO string (ignored on import)
+  "items": [
+    {
+      "id": 1,                 // number, primary key (referenced by price_history.item_id)
+      "name": "milk",          // string
+      "category": "dairy",     // string
+      "preferred_unit": "gal", // string unit code
+      "barcode": null,         // string | null
+      "notes": "",             // string
+      "last_logged_at": 0      // number, ms epoch (optional)
+    }
+  ],
+  "stores": [
+    {
+      "id": 1,                 // number, primary key (referenced by price_history.store_id)
+      "name": "Costco",        // string
+      "chain": "Costco",       // string (optional)
+      "location": "warehouse"  // string (optional)
+    }
+  ],
+  "price_history": [
+    {
+      "id": 1,                 // number, primary key
+      "item_id": 1,            // number → items.id
+      "store_id": 1,           // number → stores.id (may be null)
+      "date": "2026-05-20T09:00", // string "YYYY-MM-DDTHH:mm"
+      "size": 1,               // number, package size in `unit`
+      "unit": "gal",           // string: g|kg|oz|lb | ml|l|floz|qt|gal | ct|dozen
+      "price": 3.99,           // number, total price paid
+      "unit_price": 0.0312,    // number, price per display unit ($/oz, $/floz, $/ct)
+      "is_sale": false,        // boolean
+      "notes": ""              // string
+    }
+  ],
+  "baskets": []                // optional; the active shopping list
+}
+```
+
+Minimum required for a successful import: `items`, `stores`, and `price_history` arrays (at least one non-empty). **Import replaces all existing data on the device.**
 
 ## Analytics
 

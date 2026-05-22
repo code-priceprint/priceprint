@@ -177,16 +177,22 @@ function wireDataActions() {
     }
   });
 
-  importBtn.addEventListener('click', () => fileInput.click());
+  importBtn.addEventListener('click', async () => {
+    // Explain the expected format BEFORE the file picker, so people know what
+    // file to choose and that importing overwrites their data.
+    const proceed = await customConfirm(
+      'Import expects a PricePrint backup in JSON — exactly the file the "Export JSON" button creates. '
+      + 'It must contain "items", "stores", and "price_history" arrays. '
+      + 'The easiest way to see the exact fields is to Export first and open that file. '
+      + 'Importing REPLACES everything currently on this device. Choose a file to import?',
+      { title: 'Import data', confirmLabel: 'Choose file', cancelLabel: 'Cancel', danger: true }
+    );
+    if (proceed) fileInput.click();
+  });
 
   fileInput.addEventListener('change', async () => {
     const file = fileInput.files && fileInput.files[0];
     if (!file) return;
-    const proceed = await customConfirm(
-      'Importing will REPLACE everything currently on this device with the contents of the file. Continue?',
-      { title: 'Import data', confirmLabel: 'Yes, replace', cancelLabel: 'Cancel', danger: true }
-    );
-    if (!proceed) { fileInput.value = ''; return; }
     try {
       const text = await file.text();
       const data = JSON.parse(text);

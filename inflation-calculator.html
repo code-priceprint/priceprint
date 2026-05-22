@@ -46,6 +46,11 @@
 <meta name="twitter:description" content="The CPI is a national average of a basket you don't buy. Calculate YOUR real inflation rate from what you actually pay.">
 <meta name="twitter:image" content="https://priceprint.artivicolab.com/og-image.jpg">
 <link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/apple-icon-180x180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PricePrint">
 <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -70,6 +75,22 @@
   <h1>Personal inflation calculator.</h1>
   <p class="tab-intro-lede">The official inflation rate is a national average of a basket you don't actually buy. Enter what a few of your regular items cost <em>before</em> and <em>now</em> — get your real rate, and see how far it is from the government's number.</p>
 </section>
+
+<!-- Static copy of the app's top nav. This page doesn't load app.js (it's a
+     standalone tool), so the tab bar is hardcoded here to match. Keep the
+     links in sync with the SCREENS list in js/app.js. -->
+<nav id="tabs" class="tabs" aria-label="screens">
+  <a class="tab" href="/log-price.html">Log price</a>
+  <a class="tab" href="/shopping.html">Shopping</a>
+  <a class="tab" href="/compare.html">Compare</a>
+  <a class="tab" href="/sale-check.html">Sale check</a>
+  <a class="tab" href="/history.html">History</a>
+  <a class="tab" href="/list.html">List</a>
+  <a class="tab" href="/stores.html">Stores</a>
+  <a class="tab" href="/inflation.html">Inflation</a>
+  <a class="tab tab-tool active" href="/inflation-calculator.html">Calculator</a>
+  <span class="tabs-scroll-hint" aria-hidden="true">→</span>
+</nav>
 
 <section class="calc" id="calc" aria-label="personal inflation calculator">
   <div class="calc-head">
@@ -130,6 +151,23 @@
 <script type="module">
   import { mountInflationCalculator } from '/js/inflation-calculator.js';
   mountInflationCalculator(document.getElementById('calcMount'));
+</script>
+<script>
+  // Same scroll-hint behavior the app's nav uses: show the → arrow only when
+  // the tab bar overflows and isn't scrolled to the end.
+  (function () {
+    const tabs = document.getElementById('tabs');
+    if (!tabs) return;
+    function update() {
+      const overflowing = tabs.scrollWidth > tabs.clientWidth + 2;
+      const atEnd = tabs.scrollLeft + tabs.clientWidth >= tabs.scrollWidth - 4;
+      tabs.classList.toggle('has-overflow', overflowing && !atEnd);
+    }
+    tabs.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    requestAnimationFrame(update);
+  })();
 </script>
 </body>
 </html>
