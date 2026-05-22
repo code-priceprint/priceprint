@@ -100,8 +100,6 @@
 
   const isStandalone = () =>
     window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  const isIOS = () =>
-    /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
   const consentDecided = () => !!readDecision();
   const installDismissed = () => {
     try { return localStorage.getItem(INSTALL_DISMISS_KEY) === '1'; } catch (e) { return false; }
