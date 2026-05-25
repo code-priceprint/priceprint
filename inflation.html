@@ -55,6 +55,46 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PricePrint">
 <link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why is my inflation different from what the news reports?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The CPI is a national average across a fixed reference basket. Your basket includes the specific brands, sizes, and stores you choose. Items that have shrunk (less per package for the same price) drive your number up even when the CPI doesn't catch it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often does the U.S. CPI comparison update?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Manually, by us, roughly quarterly. A GitHub workflow opens a tracking issue every three months to remind the maintainer to refresh the hardcoded constant. The current value's source year is shown on the screen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if I just started logging — does this work yet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The 3-month range needs items with at least 60 days of log span, so plan to wait a couple months before this number stabilizes. The 1-year range is the most representative once you've been logging consistently."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this account for shrinkflation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — because everything is computed on unit price (per ounce, per count) not per-package price. A 12 oz bag that becomes a 10 oz bag at the same sticker price registers as a 20% jump."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body data-screen="inflation">
 <noscript>

@@ -55,6 +55,46 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PricePrint">
 <link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What if an item isn't in my price history yet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can still add it as a text-only entry — it shows up on the list with \"no price yet.\" Once you log a price for it, the estimate fills in for next time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it remember the list between visits?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — the active list is stored in IndexedDB on your device. Clear it manually when you're done with a trip, or leave items for next time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if I always buy a specific item at a specific store, even if it's not the cheapest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The recommendation surfaces the cheapest known store, but nothing stops you from buying it elsewhere — the \"log it\" step records whatever price/store you actually paid. PricePrint learns from your real behavior, not from where it told you to shop."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I share my list with someone else?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — there's no sync, no share link, no cloud. Your list lives on this device only. (Use export/import if you really need to move it.)"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body data-screen="shopping">
 <noscript>

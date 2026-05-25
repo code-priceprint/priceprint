@@ -52,6 +52,46 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PricePrint">
 <link rel="stylesheet" href="/css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is my personal inflation rate calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It sums what your items cost \"before\" and \"now,\" then compounds the change into an annual rate over the time period you pick. Example: a basket that went from $20 to $23 over one year is +15% annualized; over two years it's about +7.2% per year."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where does the official rate it compares against come from?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It uses the most recent U.S. CPI year-over-year figure (food at home), refreshed periodically. It's a reference point, not a live feed — PricePrint never makes network requests with your data."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is anything I type here sent anywhere?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The calculator runs entirely in your browser. Nothing you enter is uploaded, stored on a server, or logged — there is no server. Reload the page and it's gone."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I track this over time instead of one snapshot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Open the free PricePrint app and log prices as you shop. The Inflation tab then computes your personal rate continuously from your real purchase history, broken down by item and store."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <noscript>

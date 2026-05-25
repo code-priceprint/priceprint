@@ -55,6 +55,46 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PricePrint">
 <link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many items do I need before this works?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An item needs prices logged at two or more stores to count. The headline numbers stabilize around 25–30 items spanning multiple stores. Below that, single outliers dominate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my \"cheapest store\" different from what the news says?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "National rankings average across millions of shoppers buying different baskets. PricePrint averages across your basket — which is almost certainly not the national average basket."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it factor in how often I buy each item?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The savings number is purchase-frequency-weighted — items you buy weekly contribute more to the total than items you buy twice a year."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does it know about gas, parking, or driving time to a farther store?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The savings number is just the grocery delta. If the cheapest store is 30 minutes farther, you have to weigh that yourself."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body data-screen="compare">
 <noscript>

@@ -55,6 +55,46 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PricePrint">
 <link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do I need an account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. PricePrint has no accounts and no sign-up. The \"your data\" stored locally is yours alone — there's literally no place to sync it to."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if I forget the size on the package?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Skip the size field and just log the price you paid. You'll lose the per-unit comparison for that one log, but the price still counts toward your history."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I edit a log later if I made a mistake?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Open the History tab, tap the row, edit any field, save. Or delete the log entirely."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why not let the camera scan the price tag?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "That would either need a server (breaks the privacy promise) or a 50MB OCR model in your browser (breaks the speed promise). Typing four fields is faster than waiting for any scanner."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body data-screen="entry">
 <noscript>

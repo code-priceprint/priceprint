@@ -55,6 +55,46 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PricePrint">
 <link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many logs before the chart is useful?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Five or six logs across a few months. Below that, the chart is technically there but the trend line is noise."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I see weekly or monthly patterns?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — the per-item page surfaces a day-of-week breakdown when you have at least a dozen logs for an item. It tells you which day of the week the lowest prices tend to show up."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What about seasonal items?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The chart shows the raw timeline; if strawberries spike every winter and crash every summer, you'll see the pattern. PricePrint doesn't model seasonality formally — it just plots what you logged."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is it called \"list\" and not \"catalog\"?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "\"Catalog\" was longer and less clear about what the tab does, which is mostly: scroll a list, find an item, drill into it. Naming things is the hardest part of any app."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body data-screen="list">
 <noscript>

@@ -55,6 +55,46 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PricePrint">
 <link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What counts as a \"real\" sale here?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Anything priced below your historical median for that item at non-sale prices. PricePrint doesn't compare to the store's own \"regular price\" sticker — those are routinely inflated to make sales look bigger. It compares to what you have actually paid."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many logs do I need before this works for an item?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Three or four non-sale logs is enough to get a baseline. With only one or two, the screen still shows the sale price but won't pass judgment yet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does shrinkflation affect this?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and that's the point. Because PricePrint computes per-ounce / per-count price, a \"sale\" on a smaller package gets exposed — the unit price is what gets compared, not the sticker price."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why don't you just scrape weekly flyers automatically?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "That would require sending requests to dozens of grocery sites — which breaks the privacy promise and slows the app down. The user typing the SALE flag is the cost; the upside is the data never leaves your device."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body data-screen="validator">
 <noscript>

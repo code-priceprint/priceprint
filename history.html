@@ -55,6 +55,46 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PricePrint">
 <link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can I export my history?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The \"Export data\" link in the footer dumps everything (items, stores, baskets, full price log) to a single JSON file. Import works the other direction — useful for moving between devices or backing up."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if I made a mistake on a log from months ago?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Find it via search, tap to open, edit and save. Every downstream calculation re-runs with the corrected number — no manual recompute step."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I import old receipts in bulk?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only via the JSON import format. There's no receipt-photo OCR (would require sending data to a server) and no CSV importer yet."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How far back does history go?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "As far back as you've logged. There's no archive cutoff — old logs are just rows in IndexedDB, and they stay until you delete them."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body data-screen="history">
 <noscript>
