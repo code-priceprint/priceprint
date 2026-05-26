@@ -1494,17 +1494,19 @@ main {
 .shop-empty { padding: 18px 8px; }
 
 .shop-remove {
-  background: transparent;
+  background: rgba(185, 28, 28, 0.10);
   border: 0;
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  color: #b5b0a1;
+  color: var(--err);
   font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
   font-family: inherit;
   transition: background 0.12s ease, color 0.12s ease;
 }
+.shop-remove:hover { background: var(--err); color: #fff; }
 .shop-remove:hover { background: rgba(185, 28, 28, 0.10); color: var(--err); }
 
 .shop-qty-wrap {
@@ -2347,19 +2349,38 @@ footer {
 .r-cta-wrap { text-align: center; margin: 6px 0 8px; }
 .r-cta {
   display: inline-block;
-  background: #1a1a1a;
-  color: #fefdf5;
+  background: var(--brand);
+  color: #fff;
   padding: clamp(14px, 2vw, 18px) clamp(22px, 3vw, 32px);
   font-family: inherit;
   font-size: clamp(13px, 1.6vw, 15px);
   font-weight: 700;
   letter-spacing: 0.05em;
   text-decoration: none;
-  border: 2px dashed #1a1a1a;
+  border: 2px solid var(--brand);
+  border-radius: 6px;
   cursor: pointer;
   transition: background 0.18s ease, border-color 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
   animation: r-cta-breathe 2.4s ease-in-out infinite;
   position: relative;
+  overflow: hidden; /* clip the glare sweep */
+}
+/* Glare/shine — a light streak that periodically sweeps across the button. */
+.r-cta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.38) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  pointer-events: none;
+  animation: r-cta-glare 3.4s ease-in-out infinite;
+}
+@keyframes r-cta-glare {
+  0%        { left: -75%; }
+  45%, 100% { left: 130%; }
 }
 .r-cta::after {
   content: " →";
@@ -2368,8 +2389,8 @@ footer {
   transition: transform 0.18s ease;
 }
 .r-cta:hover {
-  background: var(--brand);
-  border-color: var(--brand);
+  background: #0c6b4f;
+  border-color: #0c6b4f;
   color: #fff;
   text-decoration: none;
   transform: translateY(-2px);
@@ -2393,6 +2414,7 @@ footer {
 
 @media (prefers-reduced-motion: reduce) {
   .r-cta { animation: none; }
+  .r-cta::before { animation: none; display: none; }
 }
 
 .r-list {
