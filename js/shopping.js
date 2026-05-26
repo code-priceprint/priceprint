@@ -112,7 +112,7 @@ export async function mountShopping(root) {
                 <span class="shop-qty">${formatCount(qty)}</span>
                 <button class="shop-qty-btn" data-qty="${idx}:+" type="button">+</button>
               </span>
-              <span class="shop-meta-empty">no price yet — log it first</span>
+              <button class="shop-addprice" data-addprice-name="${escapeHTML(bi.name || '')}" type="button">+ Add price</button>
             </div>
           </li>
         `;
@@ -184,7 +184,7 @@ export async function mountShopping(root) {
                 ? loggedNote
                 : linePrice !== null
                   ? `<strong>${escapeHTML(storeName)}</strong> · ${formatPrice(linePrice)} est`
-                  : '<span class="shop-meta-empty">need price + store</span>'}
+                  : `<button class="shop-addprice" data-addprice-id="${bi.itemId}" type="button">+ Add price</button>`}
             </span>
           </div>
           ${purchased && canLog ? `
@@ -343,6 +343,22 @@ export async function mountShopping(root) {
     bi.purchased = check.checked;
     await saveActiveBasket(basket);
     renderList();
+  });
+
+  // "Add price" on an item with no price data yet — route to the Log a Price
+  // screen with the item pre-filled, so the user can give it a price (and pull
+  // it into the catalog) without retyping the name.
+  listEl.addEventListener('click', (e) => {
+    const addBtn = e.target.closest('[data-addprice-name], [data-addprice-id]');
+    if (!addBtn) return;
+    try {
+      if (addBtn.dataset.addpriceId) {
+        sessionStorage.setItem('priceprint.entry.prefillItemId', addBtn.dataset.addpriceId);
+      } else {
+        sessionStorage.setItem('priceprint.entry.prefillItemName', addBtn.dataset.addpriceName || '');
+      }
+    } catch (err) {}
+    window.location.href = 'log-price.html';
   });
 
   // Inline "log this price" save — turns the shopping list into a data-entry

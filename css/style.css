@@ -371,7 +371,7 @@ main {
   width: 100%;
   padding: 12px 36px 12px 12px;
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 14px;
+  font-size: 16px; /* >=16px so iOS Safari doesn't zoom on focus */
   border: 0;
   border-bottom: 1px dashed #b5b0a1;
   background: transparent;
@@ -449,8 +449,8 @@ main {
   top: calc(100% + 6px);
   left: 0;
   min-width: 100%;
-  background: #fefdf5;
-  border: 1px dashed var(--brand);
+  background: #ffffff;
+  border: 1px solid var(--brand);
   border-radius: 4px;
   list-style: none;
   padding: 4px;
@@ -1330,7 +1330,7 @@ main {
   width: 100%;
   padding: 12px 12px;
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  font-size: 15px;
+  font-size: 16px; /* >=16px so iOS Safari doesn't zoom on focus */
   border: 0;
   border-bottom: 1px dashed #b5b0a1;
   background: transparent;
@@ -1415,7 +1415,7 @@ main {
   border: 0;
   background: transparent;
   font-family: inherit;
-  font-size: 13.5px;
+  font-size: 16px; /* >=16px so iOS Safari doesn't zoom on focus */
   font-weight: 700;
   color: var(--ink);
   width: 70px;
@@ -1540,6 +1540,21 @@ main {
 .shop-qty-size { color: #8a8480; font-size: 11px; }
 .shop-store strong { color: var(--brand); }
 .shop-meta-empty { color: #b5b0a1; font-style: italic; font-size: 11.5px; }
+/* "Add price" — clear button affordance for items with no price logged yet */
+.shop-addprice {
+  background: transparent;
+  border: 1px dashed var(--brand);
+  border-radius: 5px;
+  color: var(--brand);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-style 0.15s ease;
+}
+.shop-addprice:hover { background: rgba(10, 94, 68, 0.08); border-style: solid; }
 
 .shop-add-new {
   font-style: italic;
@@ -1718,8 +1733,8 @@ main {
   top: calc(100% + 2px);
   left: 0;
   right: 0;
-  background: #fefdf5;
-  border: 1px dashed #a8a294;
+  background: #ffffff;
+  border: 1px solid var(--brand);
   border-radius: 4px;
   list-style: none;
   margin: 0;
@@ -1957,9 +1972,9 @@ main {
 }
 button.primary {
   width: 100%;
-  background: #1a1a1a;
-  color: #fefdf5;
-  border: 2px dashed #1a1a1a;
+  background: var(--brand);
+  color: #fff;
+  border: 2px solid var(--brand);
   border-radius: 8px;
   padding: 14px;
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -1972,8 +1987,8 @@ button.primary {
   animation: r-cta-breathe 2.4s ease-in-out infinite;
 }
 button.primary:hover {
-  background: var(--brand);
-  border-color: var(--brand);
+  background: #0c6b4f;
+  border-color: #0c6b4f;
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(10, 94, 68, 0.35);
   animation: none;
@@ -2016,17 +2031,34 @@ footer {
   flex-wrap: wrap;
 }
 .footer-actions .sep { color: #b5b0a1; }
+/* Action links read as actual buttons (outlined pill) so users know they're
+   clickable. The dense footer utility row keeps plain text links (override
+   below) — pills there would be cluttered. */
 .link-btn {
   background: transparent;
-  border: 0;
-  padding: 0;
+  border: 1px dashed var(--brand);
+  border-radius: 5px;
+  padding: 8px 16px;
   font: inherit;
+  font-weight: 700;
   color: var(--brand);
   cursor: pointer;
   text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.link-btn:hover { background: rgba(10, 94, 68, 0.08); border-style: solid; text-decoration: none; }
+.link-danger { border-color: var(--err); }
+.link-danger:hover { background: rgba(185, 28, 28, 0.07); }
+
+/* Footer utility links stay plain text (dense, comma-separated row). */
+.footer-actions .link-btn {
+  border: 0;
+  padding: 0;
+  font-weight: inherit;
   letter-spacing: inherit;
 }
-.link-btn:hover { text-decoration: underline; }
+.footer-actions .link-btn:hover { background: transparent; text-decoration: underline; }
 
 /* ---------- landing page: the receipt ---------- */
 
@@ -3644,7 +3676,7 @@ main.below-fold { max-width: 1200px; padding: 0 24px 64px; }
 .calc-now {
   width: 100%;
   font-family: var(--font);
-  font-size: 15px;
+  font-size: 16px; /* >=16px so iOS Safari doesn't zoom on focus */
   padding: 10px 12px;
   border: 1px solid #d4cfbe;
   border-radius: 4px;

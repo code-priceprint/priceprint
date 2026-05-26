@@ -110,6 +110,16 @@ export async function mountEntry(root) {
     }
   }
 
+  // Arrived from the Shopping list's "Add price" on an item that isn't in the
+  // catalog yet — pre-fill the name (no last log to pull from) and focus store.
+  const prefillName = sessionStorage.getItem('priceprint.entry.prefillItemName');
+  if (!didPrefill && prefillName) {
+    sessionStorage.removeItem('priceprint.entry.prefillItemName');
+    root.querySelector('#itemInput').value = prefillName;
+    didPrefill = true;
+    setTimeout(() => root.querySelector('#storeInput')?.focus(), 0);
+  }
+
   // Restore any in-progress draft from a prior page load so a refresh doesn't
   // wipe what the user was typing. Skipped when a prefill happened — the user
   // explicitly asked to log a specific item, don't restore an unrelated draft.
