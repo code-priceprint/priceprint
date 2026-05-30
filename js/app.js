@@ -59,9 +59,10 @@ async function init() {
   tabs.innerHTML = Object.entries(SCREENS).map(([k, v]) =>
     `<a class="tab${k === initialTab ? ' active' : ''}" data-screen="${k}" href="${v.path}">${v.label}</a>`
   ).join('')
-    // Standalone tool page (not an app screen) — no data-screen, so the click
-    // handler ignores it and the browser just navigates to it.
+    // Standalone tool/content pages (not app screens) — no data-screen, so the
+    // click handler ignores them and the browser just navigates.
     + '<a class="tab tab-tool" href="/inflation-calculator.html">Calculator</a>'
+    + '<a class="tab tab-tool" href="/us-grocery-prices.html">US Prices</a>'
     + '<span class="tabs-scroll-hint" aria-hidden="true">→</span>';
 
   // Show/hide the scroll-hint arrow based on overflow + scroll position.

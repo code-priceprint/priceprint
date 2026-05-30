@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M720E2M37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
+  try {
+    if (localStorage.getItem('priceprint.consent') === 'granted') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    }
+  } catch (e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-2M720E2M37');
+  gtag('config', 'AW-17221241617');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Average Grocery Prices in the USA (2026) — PricePrint</title>
+<meta name="description" content="Current US average grocery prices: milk, eggs, bread, ground beef, chicken, rice, potatoes and more. Sourced from the Bureau of Labor Statistics. Updated quarterly.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://priceprint.artivicolab.com/us-grocery-prices.html">
+<meta name="theme-color" content="#0f7c5a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Average Grocery Prices in the USA (2026) — PricePrint">
+<meta property="og:description" content="Current US average grocery prices for everyday items, from official BLS data. National averages — your real prices likely differ.">
+<meta property="og:url" content="https://priceprint.artivicolab.com/us-grocery-prices.html">
+<meta property="og:image" content="https://priceprint.artivicolab.com/og-image.jpg">
+<meta property="og:image:width" content="1298">
+<meta property="og:image:height" content="682">
+<meta property="og:image:alt" content="PricePrint — your personal grocery price memory">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Average Grocery Prices in the USA (2026) — PricePrint">
+<meta name="twitter:description" content="Current US average grocery prices for everyday items, from official BLS data. National averages — your real prices likely differ.">
+<meta name="twitter:image" content="https://priceprint.artivicolab.com/og-image.jpg">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/apple-icon-180x180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PricePrint">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Where do these average grocery prices come from?",
+      "acceptedAnswer": { "@type": "Answer", "text": "From the U.S. Bureau of Labor Statistics' Average Retail Food Prices series (food at home, U.S. city average). It's the same dataset the Consumer Price Index draws on for grocery items." } },
+    { "@type": "Question", "name": "How often is this page updated?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Approximately every quarter. The BLS releases new monthly figures roughly two to four weeks after each month closes; we re-pull and update the table on a quarterly cadence." } },
+    { "@type": "Question", "name": "Why are the prices at my store different from these averages?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Three big reasons: region (the same item costs noticeably more in coastal metros than in the Midwest), store (Costco vs Whole Foods vs Aldi vary by 30 to 60 percent on common items), and brand or package size (name-brand and small packs run higher per unit). The national average is a useful baseline, not what you actually pay." } },
+    { "@type": "Question", "name": "Are US grocery prices going up in 2026?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Food-at-home inflation has cooled from the 2022 peak but is still positive year over year. The headline figure understates what most households experience because it averages a fixed basket across the whole country, while your real basket is concentrated in the categories that rose fastest." } }
+  ]
+}
+</script>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/" class="brand" aria-label="back to PricePrint home">
+    <img class="brand-logo" src="/android-icon-48x48.png" alt="" aria-hidden="true" />
+    Price<span class="dot">·</span>Print
+  </a>
+  <div class="tagline">your private price memory</div>
+</header>
+
+<section class="tab-intro">
+  <p class="tab-intro-eyebrow">US Grocery Prices · 2026</p>
+  <h1>Average grocery prices in the USA.</h1>
+  <p class="tab-intro-lede">National averages for the most-bought grocery items, sourced from the U.S. <strong>Bureau of Labor Statistics</strong>. These are the same numbers the Consumer Price Index uses — useful as a baseline, but almost certainly different from what <em>you</em> actually pay at <em>your</em> stores.</p>
+</section>
+
+<!-- Static copy of the app's top nav (this page doesn't load app.js).
+     Keep in sync with the SCREENS list in js/app.js. -->
+<nav id="tabs" class="tabs" aria-label="screens">
+  <a class="tab" href="/log-price.html">Log price</a>
+  <a class="tab" href="/shopping.html">Shopping</a>
+  <a class="tab" href="/compare.html">Compare</a>
+  <a class="tab" href="/sale-check.html">Sale check</a>
+  <a class="tab" href="/history.html">History</a>
+  <a class="tab" href="/list.html">List</a>
+  <a class="tab" href="/stores.html">Stores</a>
+  <a class="tab" href="/inflation.html">Inflation</a>
+  <a class="tab tab-tool" href="/inflation-calculator.html">Calculator</a>
+  <a class="tab tab-tool active" href="/us-grocery-prices.html">US Prices</a>
+  <span class="tabs-scroll-hint" aria-hidden="true">→</span>
+</nav>
+
+<section class="price-hub" aria-label="average US grocery prices">
+  <div class="price-table-wrap">
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col" class="num">Avg US price</th>
+          <th scope="col">Unit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Milk, fortified whole</td>           <td class="num">$4.05</td><td>per gallon</td></tr>
+        <tr><td>Eggs, Grade A large</td>             <td class="num">$3.40</td><td>per dozen</td></tr>
+        <tr><td>Bread, white pan</td>                <td class="num">$1.95</td><td>per pound</td></tr>
+        <tr><td>Ground beef, 100% beef</td>          <td class="num">$5.80</td><td>per pound</td></tr>
+        <tr><td>Chicken breast, boneless</td>        <td class="num">$4.20</td><td>per pound</td></tr>
+        <tr><td>Bananas</td>                         <td class="num">$0.65</td><td>per pound</td></tr>
+        <tr><td>Potatoes, white</td>                 <td class="num">$1.05</td><td>per pound</td></tr>
+        <tr><td>Tomatoes, field-grown</td>           <td class="num">$1.95</td><td>per pound</td></tr>
+        <tr><td>Onions</td>                          <td class="num">$1.40</td><td>per pound</td></tr>
+        <tr><td>Rice, white long-grain</td>          <td class="num">$1.00</td><td>per pound</td></tr>
+      </tbody>
+    </table>
+    <p class="price-table-note">Source: <a href="https://www.bls.gov/cpi/factsheets/average-prices.htm" target="_blank" rel="noopener">U.S. Bureau of Labor Statistics — Average Retail Food Prices</a> (U.S. city average, food at home). Figures are approximate to the nearest 5¢ and reflect the most recent monthly release we've pulled.</p>
+  </div>
+</section>
+
+<section class="tab-explainer">
+  <h2>Why your grocery bill doesn't match these numbers</h2>
+  <p>A national average is a single number stretched across 50 states, every store format, and every brand. <em>Your</em> bill is one shopper, in a few stores, buying specific brands. Three things drive the gap:</p>
+  <ul class="price-reasons">
+    <li><strong>Region.</strong> The same gallon of milk costs noticeably more in Boston or San Francisco than in Houston or St. Louis. Coastal metros run 15–25% above the national average for staples.</li>
+    <li><strong>Store choice.</strong> The spread between Aldi or a warehouse club and a premium grocer on the same item is routinely 30–60%. The "average" sits somewhere in the middle that almost nobody actually pays.</li>
+    <li><strong>Brand and size.</strong> Name-brand and small-pack items run well above store-brand or bulk. Per-pound prices on a 12 oz package can be double what a 5 lb pack costs.</li>
+  </ul>
+  <p>That's why the headline "grocery inflation rate" on the news rarely matches what you feel at checkout — your basket isn't the average basket.</p>
+
+  <div class="tab-explainer-cta">
+    <a href="/log-price.html" class="hook-cta">See your real prices →</a>
+  </div>
+  <p class="price-cta-sub">PricePrint logs what <em>you</em> actually pay, at <em>your</em> stores, and shows your real basket vs. the national number. Free, no account, runs in your browser.</p>
+
+  <h2>How we sourced this</h2>
+  <p>All figures come from the BLS <em>Average Retail Food Prices</em> dataset — the same survey that feeds the Consumer Price Index. We refresh this page quarterly when BLS publishes new monthly figures. Prices are U.S. city averages, not a specific store or city. For state-level breakdowns or historical series, BLS publishes the full data <a href="https://data.bls.gov/cgi-bin/surveymost?ap" target="_blank" rel="noopener">here</a>.</p>
+
+  <details class="tab-faq">
+    <summary>FAQ</summary>
+    <dl>
+      <dt>Where do these average grocery prices come from?</dt>
+      <dd>From the U.S. Bureau of Labor Statistics' Average Retail Food Prices series (food at home, U.S. city average). It's the same dataset the Consumer Price Index draws on for grocery items.</dd>
+
+      <dt>How often is this page updated?</dt>
+      <dd>Approximately every quarter. The BLS releases new monthly figures roughly two to four weeks after each month closes; we re-pull and update the table on a quarterly cadence.</dd>
+
+      <dt>Why are the prices at my store different from these averages?</dt>
+      <dd>Three big reasons: <em>region</em> (the same item costs noticeably more in coastal metros than in the Midwest), <em>store</em> (Costco vs Whole Foods vs Aldi vary by 30–60% on common items), and <em>brand or package size</em> (name-brand and small packs run higher per unit). The national average is a useful baseline, not what you actually pay.</dd>
+
+      <dt>Are US grocery prices going up in 2026?</dt>
+      <dd>Food-at-home inflation has cooled from the 2022 peak but is still positive year over year. The headline figure understates what most households experience because it averages a fixed basket across the whole country, while your real basket is concentrated in the categories that rose fastest.</dd>
+    </dl>
+  </details>
+</section>
+
+<footer>
+  <div class="footer-actions">
+    <a href="/about.html">About PricePrint</a>
+    <span class="sep">·</span>
+    <a href="/inflation-calculator.html">Inflation calculator</a>
+    <span class="sep">·</span>
+    <a href="/us-grocery-prices.html">US grocery prices</a>
+    <span class="sep">·</span>
+    <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com</a>
+    <span class="sep">·</span>
+    <a href="mailto:artivicolab@gmail.com">Contact us</a>
+    <span class="sep">·</span>
+    <a href="/privacy.html">Privacy</a>
+    <span class="sep">·</span>
+    <a href="#" class="get-app-link" onclick="event.preventDefault(); if(window.priceprintShowInstall) window.priceprintShowInstall();">Get the app</a>
+    <span class="sep">·</span>
+    <a href="#" class="cookie-prefs-link" onclick="event.preventDefault(); if(window.priceprintShowConsent) window.priceprintShowConsent();">Cookie preferences</a>
+  </div>
+  <div class="footer-copyright">© <span class="footer-year">2026</span> Artivicolab. All rights reserved.</div>
+</footer>
+
+<script src="/js/consent.js" defer></script>
+<script>
+  // Same scroll-hint behavior the app's nav uses: show the → only when the
+  // tab bar overflows and isn't scrolled to the end.
+  (function () {
+    const tabs = document.getElementById('tabs');
+    if (!tabs) return;
+    function update() {
+      const overflowing = tabs.scrollWidth > tabs.clientWidth + 2;
+      const atEnd = tabs.scrollLeft + tabs.clientWidth >= tabs.scrollWidth - 4;
+      tabs.classList.toggle('has-overflow', overflowing && !atEnd);
+    }
+    tabs.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    requestAnimationFrame(update);
+  })();
+</script>
+</body>
+</html>
