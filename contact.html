@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M720E2M37"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
+  try {
+    if (localStorage.getItem('priceprint.consent') === 'granted') {
+      gtag('consent', 'update', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    }
+  } catch (e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-2M720E2M37');
+  gtag('config', 'AW-17221241617');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact PricePrint — feedback, bugs, ideas | PricePrint</title>
+<meta name="description" content="Get in touch with the PricePrint team. Send feedback, report a bug, request a feature, or ask a press or business question — straight from this page.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://priceprint.artivicolab.com/contact.html">
+<meta name="theme-color" content="#0f7c5a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contact PricePrint">
+<meta property="og:description" content="Send feedback, report a bug, request a feature, or ask a question — straight from the page.">
+<meta property="og:url" content="https://priceprint.artivicolab.com/contact.html">
+<meta property="og:image" content="https://priceprint.artivicolab.com/og-image.jpg">
+<meta property="og:image:width" content="1298">
+<meta property="og:image:height" content="682">
+<meta property="og:image:alt" content="PricePrint — your personal grocery price memory">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contact PricePrint">
+<meta name="twitter:description" content="Send feedback, report a bug, request a feature, or ask a question — straight from the page.">
+<meta name="twitter:image" content="https://priceprint.artivicolab.com/og-image.jpg">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/apple-icon-180x180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PricePrint">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="/" class="brand" aria-label="back to PricePrint home">
+    <img class="brand-logo" src="/android-icon-48x48.png" alt="" aria-hidden="true" />
+    Price<span class="dot">·</span>Print
+  </a>
+  <div class="tagline">your private price memory</div>
+</header>
+
+<section class="tab-intro">
+  <p class="tab-intro-eyebrow">Contact</p>
+  <h1>Tell us what's on your mind.</h1>
+  <p class="tab-intro-lede">Feedback, a bug, a feature idea, or a press question — fill this in and it lands in our inbox. We'll reply to the email you give us. No account needed.</p>
+</section>
+
+<section class="contact" aria-label="contact form">
+  <form id="contactForm" class="contact-form" novalidate>
+    <label class="contact-field">
+      <span class="contact-label">Your name</span>
+      <input type="text" name="name" autocomplete="name" required>
+    </label>
+
+    <label class="contact-field">
+      <span class="contact-label">Your email <small>(so we can reply)</small></span>
+      <input type="email" name="email" autocomplete="email" required>
+    </label>
+
+    <label class="contact-field">
+      <span class="contact-label">What's this about?</span>
+      <select name="topic" required>
+        <option value="" disabled selected>Choose one…</option>
+        <option>Feedback</option>
+        <option>Bug report</option>
+        <option>Feature request</option>
+        <option>Press or business</option>
+        <option>Something else</option>
+      </select>
+    </label>
+
+    <label class="contact-field">
+      <span class="contact-label">Subject</span>
+      <input type="text" name="subject" required>
+    </label>
+
+    <label class="contact-field">
+      <span class="contact-label">Message</span>
+      <textarea name="message" rows="6" required></textarea>
+    </label>
+
+    <button type="submit" class="contact-submit" id="contactSubmit">Send message</button>
+    <p class="contact-fineprint">Opens your email app with everything filled in — just hit send.</p>
+  </form>
+</section>
+
+<footer>
+  <div class="footer-actions">
+    <a href="/about.html">About PricePrint</a>
+    <span class="sep">·</span>
+    <a href="/inflation-calculator.html">Inflation calculator</a>
+    <span class="sep">·</span>
+    <a href="https://artivicolab.com" target="_blank" rel="noopener">artivicolab.com</a>
+    <span class="sep">·</span>
+    <a href="/contact.html">Contact us</a>
+    <span class="sep">·</span>
+    <a href="/privacy.html">Privacy</a>
+    <span class="sep">·</span>
+    <a href="#" class="get-app-link" onclick="event.preventDefault(); if(window.priceprintShowInstall) window.priceprintShowInstall();">Get the app</a>
+    <span class="sep">·</span>
+    <a href="#" class="cookie-prefs-link" onclick="event.preventDefault(); if(window.priceprintShowConsent) window.priceprintShowConsent();">Cookie preferences</a>
+  </div>
+  <div class="footer-copyright">© <span class="footer-year">2026</span> Artivicolab. All rights reserved.</div>
+</footer>
+
+<script src="/js/consent.js" defer></script>
+<script>
+  // Build a fully pre-filled mailto from the form fields, then open it. The
+  // visitor's email app launches with the recipient, subject, and body already
+  // written — they just press send. No server, no third party.
+  (function () {
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const f = new FormData(form);
+      const topic = (f.get('topic') || 'Contact').trim();
+      const subj = (f.get('subject') || '').trim();
+      const subject = `[${topic}] ${subj || 'PricePrint message'}`;
+      const body =
+        `Name: ${(f.get('name') || '').trim()}\n` +
+        `Email: ${(f.get('email') || '').trim()}\n` +
+        `Topic: ${topic}\n\n` +
+        `${(f.get('message') || '').trim()}\n`;
+      const url = 'mailto:artivicolab@gmail.com'
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body=' + encodeURIComponent(body);
+      window.location.href = url;
+    });
+  })();
+</script>
+</body>
+</html>
